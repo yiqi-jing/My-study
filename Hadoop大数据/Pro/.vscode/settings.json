@@ -1,0 +1,15 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "sqltools.connections": [
+        {
+            "hiveCLIServiceProtocolVersion": "V11",
+            "previewLimit": 50,
+            "driver": "Hive",
+            "host": "hadoop1",
+            "port": 10000,
+            "username": "root",
+            "password": "hadoop",
+            "name": "hive"
+        }
+    ]
+}

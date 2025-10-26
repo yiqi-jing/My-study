@@ -1,0 +1,27 @@
+{
+  "name": "scala",
+  "argv": [
+    "C:\\Users\\yelan\\AppData\\Local\\Coursier\\cache\\arc\\https\\github.com\\scala\\scala3\\releases\\download\\3.7.1\\scala3-3.7.1-x86_64-pc-win32.zip\\scala3-3.7.1-x86_64-pc-win32\\libexec\\scala-cli.exe",
+    "--cli-default-scala-version",
+    "3.7.1",
+    "--repository",
+    "file:///C:/Users/yelan/AppData/Local/Coursier/cache/arc/https/github.com/scala/scala3/releases/download/3.7.1/scala3-3.7.1-x86_64-pc-win32.zip/scala3-3.7.1-x86_64-pc-win32/maven2",
+    "--prog-name",
+    "scala",
+    "--skip-cli-updates",
+    "bsp",
+    "--json-options",
+    "F:\\Java\\.scala-build\\ide-options-v2.json",
+    "--json-launcher-options",
+    "F:\\Java\\.scala-build\\ide-launcher-options.json",
+    "--envs-file",
+    "F:\\Java\\.scala-build\\ide-envs.json",
+    "F:\\Java"
+  ],
+  "version": "1.8.0",
+  "bspVersion": "2.1.1",
+  "languages": [
+    "scala",
+    "java"
+  ]
+}
