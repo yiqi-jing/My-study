@@ -27,7 +27,7 @@
 
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 
 
@@ -38,7 +38,7 @@ options.add_experimental_option('detach', True)  # 让浏览器不自动关闭
 #     "Cookie=tt_webid=7563849896224081449; gfkadpd=24,6457; ttcid=0b2c9410a2b046ecb0bc698662673e9e41; s_v_web_id=verify_mh1b4bd9_Ij7ISTR4_HRZM_4Px0_Bzjm_gZzjBWQvUTm2; local_city_cache=%E5%8D%97%E5%AE%81; ttwid=1%7CkGbkxbO04TpT_t1LqTnn72rbep-U4FVxVQmn6-WsxVs%7C1761096052%7C09c93c0f0ca035cc205b9b3ba31b49a2be4a6edc3e4bb0c64f5e2c989447b97b; tt_scid=89TETJF5BTEHrpHhwf0ZIX1NoLl.ykwaJom.n8fqvAlhvpuvc.HuwNyhBwvDrbDz531a; x-web-secsdk-uid=0ec13115-c221-44d2-bacd-677a19f2bba4; csrftoken=74b092b979df1726041b86b7ff394b52; _ga_QEHZPBE5HH=GS2.1.s1761096053$o1$g0$t1761096053$j60$l0$h0; _ga=GA1.1.483992183.1761096053"
 # )
 
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Edge(options=options)
 
 
 driver.get("https://www.baidu.com")
@@ -55,10 +55,10 @@ driver.get("https://www.baidu.com")
 
 # 获取热点新闻
 """ 方式一 """
-# lis = driver.find_elements(By.CLASS_NAME,'hotsearch-item')
-# for li in lis:
-#     title = li.find_element(By.CLASS_NAME, 'title-content-title').text
-#     print(title)
+lis = driver.find_elements(By.CLASS_NAME,'hotsearch-item')
+for li in lis:
+    title = li.find_element(By.CLASS_NAME, 'title-content-title').text
+    print(title)
 
 """ 方式二 """
 # titles = driver.find_elements(By.CLASS_NAME, 'title-content-title')
