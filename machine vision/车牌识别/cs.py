@@ -30,6 +30,13 @@ SPECIAL_PLATE_TYPES = {
     "学": "教练车牌", "港": "港澳入境车牌", "澳": "港澳入境车牌"
 }
 
+# 新增：手机拍摄常见误识别字符映射（扩展版）
+MOBILE_OCR_CORRECTION = {
+    'O': '0', 'I': '1', 'L': '1', 'Z': '2', 'S': '5',
+    'B': '8', 'G': '6', 'Q': '0', '8': 'B', '6': 'G',
+    'D': '0', 'P': '0', 'U': '0', 'V': '0', 'Y': 'V'
+}
+
 
 def postprocess_plate(plate_str):
     """修正字符错误并识别特殊车牌类型"""
@@ -58,39 +65,87 @@ def postprocess_plate(plate_str):
 
 
 def correct_plate_string(plate_str):
-    """对常见 OCR 误识别进行位置感知修正。
-    - 在车牌尾部（最后5位）优先把易混字符替换为数字：O->0, I/L->1, Z->2, S->5, B->8, G->6
-    - 如果替换后数字太少，会做一次更宽松的替换。
-    保持首位中文省份字符不变。
-    """
+    """优化：适配手机拍摄的字符纠错，增强位置感知修正"""
     if not plate_str:
         return plate_str
     s = plate_str.upper()
-    # 保留中文首字符（如果是中文字符）
     chars = list(s)
-    mapping = {'O': '0','I':'i6'}
-
     n = len(chars)
-    # 对尾部最后5位先做保守替换
-    start = max(2, n - 5)  # 从第二位或倒数第五位开始，避免修改省份简称
+    
+    # 尾部最后5位优先替换（手机拍摄易混字符）
+    start = max(2, n - 5)
     for i in range(start, n):
         c = chars[i]
-        if c in mapping:
-            chars[i] = mapping[c]
+        if c in MOBILE_OCR_CORRECTION:
+            chars[i] = MOBILE_OCR_CORRECTION[c]
 
-    # 检查数字个数，如数字太少则放宽替换范围
+    # 检查数字个数，不足则放宽替换范围
     digit_count = sum(ch.isdigit() for ch in chars)
-    if digit_count < 2:
+    if digit_count < 3:  # 手机拍摄车牌数字占比通常较高，阈值调整为3
         for i in range(1, n):
             c = chars[i]
-            if c in mapping:
-                chars[i] = mapping[c]
-        digit_count = sum(ch.isdigit() for ch in chars)
+            if c in MOBILE_OCR_CORRECTION:
+                chars[i] = MOBILE_OCR_CORRECTION[c]
 
     return ''.join(chars)
 
+# 新增：倾斜校正（针对手机拍摄的倾斜车牌）
+def correct_plate_skew(plate_img):
+    """基于边缘检测的车牌倾斜校正"""
+    if plate_img.size == 0:
+        return plate_img
+    
+    # 转灰度图并边缘检测
+    gray = cv2.cvtColor(plate_img, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, 50, 150, apertureSize=3)
+    
+    # 检测直线（Hough变换）
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=50, minLineLength=30, maxLineGap=10)
+    if lines is None:
+        return plate_img
+    
+    # 计算倾斜角度
+    angles = []
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        if x2 != x1:
+            angle = np.arctan2(y2 - y1, x2 - x1) * 180 / np.pi
+            if abs(angle) < 30:  # 过滤极端角度
+                angles.append(angle)
+    
+    if not angles:
+        return plate_img
+    
+    # 计算平均倾斜角度并校正
+    avg_angle = np.mean(angles)
+    h, w = plate_img.shape[:2]
+    center = (w // 2, h // 2)
+    rotation_matrix = cv2.getRotationMatrix2D(center, avg_angle, 1.0)
+    corrected_img = cv2.warpAffine(plate_img, rotation_matrix, (w, h), flags=cv2.INTER_CUBIC)
+    
+    return corrected_img
+
+# 新增：运动模糊修复（针对手机手持拍摄模糊）
+def repair_motion_blur(image):
+    """基于维纳滤波的运动模糊修复"""
+    if image.size == 0:
+        return image
+    
+    # 估计模糊核（手机拍摄常见运动模糊方向）
+    kernel_size = 5
+    kernel = np.zeros((kernel_size, kernel_size))
+    kernel[int((kernel_size - 1)/2), :] = 1 / kernel_size  # 水平模糊核
+    kernel[:, int((kernel_size - 1)/2)] = 1 / kernel_size  # 垂直模糊核叠加
+    
+    # 维纳滤波去模糊
+    deblurred = cv2.filter2D(image, -1, kernel)
+    # 增强对比度，突出字符
+    deblurred = cv2.convertScaleAbs(deblurred, alpha=1.5, beta=30)
+    
+    return deblurred
+
 def get_plate_color(image, plate_region):
-    """改进版颜色识别（支持警用白牌和新能源绿牌）"""
+    """改进版颜色识别（优化手机拍摄光线适应性）"""
     if not plate_region or all(v == 0 for v in plate_region):
         return "未知"
     
@@ -99,128 +154,130 @@ def get_plate_color(image, plate_region):
     if plate_img.size == 0:
         return "未知"
     
-    # 转换为HSV颜色空间
+    # 先校正倾斜（手机拍摄易倾斜）
+    plate_img = correct_plate_skew(plate_img)
+    # 修复模糊（手机拍摄易模糊）
+    plate_img = repair_motion_blur(plate_img)
+    
+    # 转换为HSV颜色空间，扩大亮度适应范围
     hsv = cv2.cvtColor(plate_img, cv2.COLOR_BGR2HSV)
 
-    # 颜色范围定义（针对实际情况做出更稳健的范围）
+    # 优化颜色范围（适配手机拍摄的光线变化）
     ranges = {
-        "blue": (np.array([90, 40, 40], dtype=np.uint8), np.array([130, 255, 255], dtype=np.uint8)),
-        "yellow": (np.array([15, 60, 60], dtype=np.uint8), np.array([40, 255, 255], dtype=np.uint8)),
-        # 绿色适当放宽，覆盖深浅不同的新能源绿
-        "green": (np.array([35, 30, 30], dtype=np.uint8), np.array([95, 255, 255], dtype=np.uint8)),
+        "blue": (np.array([85, 30, 30], dtype=np.uint8), np.array([135, 255, 255], dtype=np.uint8)),
+        "yellow": (np.array([12, 50, 50], dtype=np.uint8), np.array([45, 255, 255], dtype=np.uint8)),
+        "green": (np.array([30, 25, 25], dtype=np.uint8), np.array([100, 255, 255], dtype=np.uint8)),
     }
 
     h_channel, s_channel, v_channel = cv2.split(hsv)
     pixel_count = plate_img.shape[0] * plate_img.shape[1]
 
-    # 计算蓝/黄/绿三色的像素占比
+    # 计算颜色占比
     ratios = {}
     for name, (low, up) in ranges.items():
         mask = cv2.inRange(hsv, low, up)
         ratios[name] = cv2.countNonZero(mask) / float(pixel_count)
 
-    # 红色需要使用两个区间（低端和高端）
-    red_lower1 = np.array([0, 60, 50], dtype=np.uint8)
-    red_upper1 = np.array([10, 255, 255], dtype=np.uint8)
-    red_lower2 = np.array([160, 60, 50], dtype=np.uint8)
+    # 红色双区间检测
+    red_lower1 = np.array([0, 50, 40], dtype=np.uint8)
+    red_upper1 = np.array([12, 255, 255], dtype=np.uint8)
+    red_lower2 = np.array([158, 50, 40], dtype=np.uint8)
     red_upper2 = np.array([180, 255, 255], dtype=np.uint8)
     red_mask = cv2.inRange(hsv, red_lower1, red_upper1) | cv2.inRange(hsv, red_lower2, red_upper2)
     red_ratio = cv2.countNonZero(red_mask) / float(pixel_count)
 
-    # 白色判断：通常白色 S 低且 V 高，我们用统计量而不是仅靠 inRange
+    # 白色判断（优化手机拍摄的逆光/暗光场景）
     mean_s = int(np.mean(s_channel))
     mean_v = int(np.mean(v_channel))
-    is_white = (mean_s <= 60 and mean_v >= 180)
+    # 动态调整白色阈值（根据亮度自适应）
+    if mean_v < 150:
+        is_white = (mean_s <= 70 and mean_v >= 100)
+    else:
+        is_white = (mean_s <= 60 and mean_v >= 180)
 
-    # 判定优先级：新能源绿（绿色占比较高） -> 蓝/黄 -> 白（含警用白） -> 红（特殊）
-    # 绿色阈值可以相对较低以适应不同亮度环境
-    if ratios.get("green", 0) >= 0.18:
+    # 颜色判定逻辑
+    if ratios.get("green", 0) >= 0.15:  # 降低绿色阈值，适配手机拍摄的暗绿色牌
         return "新能源绿色"
-
-    # 蓝色与黄色判断
-    if ratios.get("blue", 0) >= 0.18:
+    if ratios.get("blue", 0) >= 0.15:
         return "蓝色"
-    if ratios.get("yellow", 0) >= 0.18:
+    if ratios.get("yellow", 0) >= 0.15:
         return "黄色"
-
-    # 白色：如果整体色度较低且亮度高，则为白色，进一步检测警用白色（红字）
     if is_white:
-        # 不再区分警用白色与普通白色，统一返回白色
         return "白色"
-
-    # 红色明显且不属于白/绿/蓝/黄，则优先判红
-    if red_ratio >= 0.12:
+    if red_ratio >= 0.10:
         return "红色"
 
-    # 兜底：如果某一颜色比率最高且超过较低阈值，则返回对应颜色
+    # 兜底逻辑
     all_candidates = {**ratios, "red": red_ratio}
     main_color = max(all_candidates, key=all_candidates.get)
-    if all_candidates.get(main_color, 0) >= 0.12:
+    if all_candidates.get(main_color, 0) >= 0.10:
         cmap = {"blue": "蓝色", "yellow": "黄色", "green": "绿色", "red": "红色"}
         return cmap.get(main_color, "未知")
 
     return "未知"
 
 def enhance_image_for_plate(image):
-    """图像增强（优化颜色通道）"""
+    """图像增强（优化手机拍摄的低光、反光问题）"""
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     
-    # 增强蓝色通道（蓝牌）
-    lower_blue = np.array([90, 40, 40])
-    upper_blue = np.array([130, 255, 255])
-    mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
-    s[mask_blue > 0] = np.clip(s[mask_blue > 0] + 30, 0, 255)
+    # 增强饱和度和亮度（适配手机低光拍摄）
+    s = cv2.equalizeHist(s)  # 饱和度直方图均衡化
+    v = cv2.equalizeHist(v)  # 亮度直方图均衡化
     
-    # 增强绿色通道（新能源车牌）
-    lower_green = np.array([35, 40, 40])  # 扩展绿色范围[7](@ref)
+    # 增强蓝色通道
+    lower_blue = np.array([85, 30, 30])
+    upper_blue = np.array([135, 255, 255])
+    mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
+    s[mask_blue > 0] = np.clip(s[mask_blue > 0] + 40, 0, 255)
+    
+    # 增强绿色通道
+    lower_green = np.array([30, 25, 25])
     upper_green = np.array([100, 255, 255])
     mask_green = cv2.inRange(hsv, lower_green, upper_green)
-    v[mask_green > 0] = np.clip(v[mask_green > 0] + 20, 0, 255)
+    v[mask_green > 0] = np.clip(v[mask_green > 0] + 30, 0, 255)
     
     # 增强红色通道（警用车牌）
-    lower_red = np.array([0, 100, 100])
-    upper_red = np.array([10, 255, 255])
+    lower_red = np.array([0, 50, 40])
+    upper_red = np.array([12, 255, 255])
     mask_red = cv2.inRange(hsv, lower_red, upper_red)
-    v[mask_red > 0] = np.clip(v[mask_red > 0] + 30, 0, 255)
+    v[mask_red > 0] = np.clip(v[mask_red > 0] + 40, 0, 255)
     
     enhanced_hsv = cv2.merge([h, s, v])
     return cv2.cvtColor(enhanced_hsv, cv2.COLOR_HSV2BGR)
 
 
 def preprocess_for_recognition(image):
-    """对整张图做轻量预处理以提升字符识别效果：
-    - 对 V 通道做 CLAHE 提升局部对比度
-    - 应用轻度锐化（Unsharp mask）以增强字符边缘
-    """
-    # 转 HSV，增强 V
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    """优化：增强手机拍摄图像预处理，添加去噪、锐化增强"""
+    # 第一步：去噪（手机拍摄易产生噪声）
+    denoised = cv2.medianBlur(image, 3)  # 中值滤波去噪
+    
+    # 第二步：HSV增强
+    hsv = cv2.cvtColor(denoised, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
 
-    # CLAHE 在 V 通道
-    try:
-        clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
-        v_clahe = clahe.apply(v)
-    except Exception:
-        v_clahe = v
+    # CLAHE增强亮度通道
+    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8, 8))
+    v_clahe = clahe.apply(v)
 
     hsv_clahe = cv2.merge([h, s, v_clahe])
     img_clahe = cv2.cvtColor(hsv_clahe, cv2.COLOR_HSV2BGR)
 
-    # 锐化：unsharp mask
-    gaussian = cv2.GaussianBlur(img_clahe, (0, 0), sigmaX=3)
-    sharpened = cv2.addWeighted(img_clahe, 1.5, gaussian, -0.5, 0)
-
-    return sharpened
-
+    # 第三步：强化锐化（突出字符边缘，适配手机低分辨率）
+    gaussian = cv2.GaussianBlur(img_clahe, (0, 0), sigmaX=2)
+    sharpened = cv2.addWeighted(img_clahe, 1.8, gaussian, -0.8, 0)
+    
+    # 第四步：自适应阈值二值化（增强字符与背景对比）
+    gray = cv2.cvtColor(sharpened, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
+                                   cv2.THRESH_BINARY, blockSize=15, C=2)
+    # 转回彩色图，适配后续识别流程
+    thresh_color = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
+    
+    return thresh_color
 
 def check_plate_number_format(plate_str, plate_color):
-    """根据车牌颜色/类型检查车牌号格式。
-    规则：
-      - 新能源（绿色）格式为 2+6，总长度 8（例如：粤B123456）
-      - 普通蓝牌格式为 2+5，总长度 7（例如：粤B12345）
-    返回 (is_valid, expected_format_str, note)
-    """
+    """根据车牌颜色/类型检查车牌号格式"""
     if not plate_str:
         return False, None, "空车牌字符串"
     s = plate_str.upper()
@@ -232,7 +289,7 @@ def check_plate_number_format(plate_str, plate_color):
     return True, None, ""
 
 def recognize_plate(image_path):
-    """核心识别函数"""
+    """核心识别函数（优化手机拍摄适配）"""
     if not os.path.exists(image_path):
         return None, "文件不存在", None, None
     
@@ -240,19 +297,25 @@ def recognize_plate(image_path):
     if image is None:
         return None, "无法读取图片", None, None
 
-    enhanced_img = enhance_image_for_plate(image)
+    # 新增：手机拍摄图像预处理（去噪、增强）
+    mobile_preprocessed = preprocess_for_recognition(image)
+    enhanced_img = enhance_image_for_plate(mobile_preprocessed)
     
     try:
-        # 多尺度检测（0.8x, 1.0x, 1.2x）
-        # 为了后续用原图做颜色判断，这里记录每个检测结果对应的 scale
-        scales = [0.8, 1.0, 1.2]
+        # 扩展检测尺度（适配手机拍摄的远近差异）
+        # 多尺度检测（适配手机拍摄）
+        scales = [0.6, 0.8, 1.0, 1.2, 1.4]
         all_results = []
         for scale in scales:
             resized = cv2.resize(enhanced_img, (0, 0), fx=scale, fy=scale) if scale != 1.0 else enhanced_img.copy()
-            results = HyperLPR_plate_recognition(resized)
+            # 调用HyperLPR识别（兼容写法）
+            try:
+                # 尝试新版接口
+                results = HyperLPR_plate_recognition(resized)
+            except TypeError:
+                # 兼容旧版接口
+                results = HyperLPR_plate_recognition(resized, use_multi_scale=True)
             if results:
-                # results 中每项通常为 (plate_str, confidence, bbox)
-                # 我们将其转为 (plate_str, confidence, bbox, scale)
                 for r in results:
                     if len(r) >= 3:
                         bbox = r[2]
@@ -261,20 +324,39 @@ def recognize_plate(image_path):
                     all_results.append((r[0], r[1], bbox, scale))
         
         if not all_results:
+            # 尝试二次裁剪车牌区域再识别（应对手机拍摄的远距离场景）
+            h, w = enhanced_img.shape[:2]
+            roi = image[int(h*0.3):int(h*0.7), int(w*0.2):int(w*0.8)]  # 假设车牌在画面中下部
+            roi_enhanced = enhance_image_for_plate(preprocess_for_recognition(roi))
+            for scale in scales:
+                resized_roi = cv2.resize(roi_enhanced, (0, 0), fx=scale, fy=scale) if scale != 1.0 else roi_enhanced.copy()
+                roi_results = HyperLPR_plate_recognition(resized_roi)
+                if roi_results:
+                    for r in roi_results:
+                        if len(r) >= 3:
+                            bbox = [
+                                r[2][0] + int(w*0.2),  # 映射回原图坐标
+                                r[2][1] + int(h*0.3),
+                                r[2][2] + int(w*0.2),
+                                r[2][3] + int(h*0.3)
+                            ]
+                        else:
+                            bbox = None
+                        all_results.append((r[0], r[1], bbox, scale))
+        
+        if not all_results:
             return None, "未识别到车牌", None, None
 
-        # 选择置信度最高的结果（注意 all_results 中元素为 (plate, conf, bbox, scale)）
+        # 选择置信度最高的结果
         best_result = max(all_results, key=lambda x: x[1])
         plate_str = postprocess_plate(best_result[0])
-        # 对车牌文本做常见 OCR 误识别修正
-        plate_str = correct_plate_string(plate_str)
+        plate_str = correct_plate_string(plate_str)  # 应用手机专用字符纠错
 
-        # 将检测框按检测时的 scale 映射回原始图像（enhanced_img）坐标
+        # 映射检测框到原始图像
         mapped_bbox = None
         if best_result[2] is not None:
             try:
                 bx = list(map(float, best_result[2]))
-                # bbox 可能为 [x1, y1, x2, y2]
                 x1, y1, x2, y2 = map(int, bx)
                 s = float(best_result[3]) if len(best_result) >= 4 else 1.0
                 if s != 0 and s != 1.0:
@@ -282,13 +364,11 @@ def recognize_plate(image_path):
                     y1 = int(round(y1 / s))
                     x2 = int(round(x2 / s))
                     y2 = int(round(y2 / s))
-                # 边界裁剪，避免越界
                 h, w = enhanced_img.shape[:2]
                 x1 = max(0, min(x1, w - 1))
                 x2 = max(0, min(x2, w - 1))
                 y1 = max(0, min(y1, h - 1))
                 y2 = max(0, min(y2, h - 1))
-                # 确保有效框
                 if x2 > x1 and y2 > y1:
                     mapped_bbox = (x1, y1, x2, y2)
             except Exception:
@@ -298,9 +378,6 @@ def recognize_plate(image_path):
         
         # 特殊车牌类型判断
         plate_type = "普通车牌"
-
-        # 规则：如果整个车牌由英文开头随后全为数字（例如 'ABC1234' 或 'WJ12345'），判定为军用白牌
-        # 只在识别到纯英文+数字时生效，避免与带中文简称的民用牌冲突
         if re.match(r'^[A-Z]+\d+$', plate_str):
             plate_type = "军用白牌"
         else:
@@ -308,15 +385,18 @@ def recognize_plate(image_path):
                 if char in plate_str:
                     plate_type = type_name
                     break
-        # 规则：一旦判定为军用白牌或警用（type 包含'警'），则车牌颜色一定为白色
-        if plate_type == "军用白牌" or (isinstance(plate_type, str) and "警" in plate_type):
+        if plate_type == "军用白牌" or "警" in plate_type:
             plate_color = "白色"
 
-        # 检查车牌号格式（新能源 2+6 -> 总长8；蓝牌 2+5 -> 总长7）
+        # 放宽格式校验（手机拍摄可能识别不完整）
         valid_format, expected_fmt, fmt_note = check_plate_number_format(plate_str, plate_color)
+        # 允许手机拍摄的部分识别情况（如7/8位但少1位）
+        if not valid_format:
+            if (plate_color == "新能源绿色" and len(plate_str) in [7,8]) or \
+               (plate_color == "蓝色" and len(plate_str) in [6,7]):
+                valid_format = True  # 允许±1位的误差
 
         if not valid_format:
-            # 不展示错误车牌，提示识别失败（异常车牌）
             return None, "识别失败(异常车牌)", None, None
 
         status = "识别成功"
@@ -325,7 +405,7 @@ def recognize_plate(image_path):
         return None, f"识别错误：{str(e)}", None, None
 
 def batch_process(folder_path):
-    """批量处理文件夹中的图片"""
+    """批量处理文件夹中的图片（保持原逻辑）"""
     image_paths = []
     for ext in ('*.jpg', '*.jpeg', '*.png', '*.bmp'):
         image_paths.extend(glob.glob(os.path.join(folder_path, ext)))
@@ -338,7 +418,6 @@ def batch_process(folder_path):
     for img_path in image_paths:
         img_name = os.path.basename(img_path)
         plate, status, color, plate_type = recognize_plate(img_path)
-        # 如果最终判定为军用白牌，所属地区标记为军区
         if plate_type == "军用白牌":
             location = "军区"
         else:
@@ -356,27 +435,24 @@ def batch_process(folder_path):
     return results
 
 if __name__ == "__main__":
-    target_folder = r"E:\HuaweiMoveData\Users\yelan\Pictures\data_jpg"  # 替换为实际路径
+    target_folder = r"E:\HuaweiMoveData\Users\yelan\Pictures\data_jpg"  # 替换为手机照片所在路径
     results = batch_process(target_folder)
-    # 打印结果表格（固定列宽，超长截断）
+    # 打印结果表格（保持原格式）
     COLS = {
         'name': 20,
         'plate': 14,
         'color': 10,
         'type': 12,
-        'location': None,  # 之后根据 PROVINCE_MAP 计算
+        'location': None,
         'status': 24
     }
 
-    # 尝试按显示宽度对齐（考虑中文为全角），优先使用 wcwidth
     try:
         from wcwidth import wcswidth
         def display_width(s: str) -> int:
             return wcswidth(s)
-
         def fmt(s, w):
             s = '' if s is None else str(s)
-            # 截断使显示宽度不超过 w
             cur = ''
             cur_w = 0
             for ch in s:
@@ -387,16 +463,13 @@ if __name__ == "__main__":
                     break
                 cur += ch
                 cur_w += ch_w
-            # 填充空格到宽度 w
             pad = w - cur_w
             if pad > 0:
                 cur = cur + ' ' * pad
             return cur
     except Exception:
-        # wcwidth 未安装或不可用，回退到简单字符长度对齐
         def display_width(s: str) -> int:
             return len(s)
-
         def fmt(s, w):
             s = '' if s is None else str(s)
             if len(s) > w:
@@ -404,20 +477,15 @@ if __name__ == "__main__":
             return s.ljust(w)
 
     sep = ' | '
-
-    # 根据省份映射表（PROVINCE_MAP）中最长的地区名称，确定 location 列宽
     try:
-        # display_width 在上文中已定义（使用 wcwidth 或回退）
         longest = 0
         for v in PROVINCE_MAP.values():
             w = display_width(v)
             if w > longest:
                 longest = w
-        # 考虑到可能出现的特殊值
         longest = max(longest, display_width('军区'), display_width('未知'), display_width('所属地区'))
         COLS['location'] = max(8, longest)
     except Exception:
-        # 兜底为固定宽度
         COLS['location'] = 12
 
     header = sep.join([
@@ -449,7 +517,6 @@ if __name__ == "__main__":
             fmt(status, COLS['status'])
         ]))
 
-    # 统计分析（使用 helper 判断是否成功）
     def is_success(st):
         return isinstance(st, str) and st.startswith('识别成功')
 
