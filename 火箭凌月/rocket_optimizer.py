@@ -106,7 +106,7 @@ class RocketLunarTransitOptimizer:
         # 月球高度过滤（至少15°避免低空大气干扰）
         if moon_alt < 15:
             return 0.0
-        score += moon_alt * 0.3  # 高度越高得分越高
+        score += moon_alt * 0.45  # 高度越高得分越高
         
         # 2. 火箭与月球的方位角一致性（拍摄点视角）
         rocket_idx = np.argmin(np.abs(np.array(self.rocket_trajectory['time']) - self.transit_time))
@@ -127,7 +127,7 @@ class RocketLunarTransitOptimizer:
             (rocket_lat - site['lat']) * 111,
             (rocket_lon - site['lon']) * 111 * np.cos(np.radians(rocket_lat))
         )
-        score -= min(distance / 10, 20)  # 每10km扣1分，最多扣20分
+        score -= min(distance / 10, 80)  # 每10km扣1分，最多扣80分
         
         return max(0, score)  # 确保得分非负
 
