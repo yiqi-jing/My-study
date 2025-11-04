@@ -1,4 +1,5 @@
 from scrapy import Spider
+from bookScrapy.items import BookscrapyItem
 
 class BookSpider(Spider):
     name = 'book'
@@ -37,6 +38,17 @@ class BookSpider(Spider):
             print(f"封面图片：{pic_url}")
             print(f"详情页：{detail_url}")
             print("==" * 50)
-
-
             self.book_count += 1
+
+
+
+            # 创建item对象
+            item = BookscrapyItem()
+            item['name'] = name
+            item['star'] = star
+            item['price'] = price
+            item['pic_url'] = pic_url
+            item['detail_url'] = detail_url
+
+            # 把item对象yield到管道文件持久化
+            yield item
