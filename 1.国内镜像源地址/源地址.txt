@@ -18,5 +18,5 @@ https://pypi.tuna.tsinghua.edu.cn/simple
 
 
 scrapy文件的创建和运行
-scrapy startproject
-scrapy crawl 
+scrapy startproject 项目名
+scrapy crawl "name"
