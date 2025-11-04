@@ -120,7 +120,7 @@ class RocketLunarTransitOptimizer:
         
         # 方位角差异（最小圆周角）
         az_diff = min(np.abs(rocket_az - moon_az), 360 - np.abs(rocket_az - moon_az))
-        score += max(0, 90 - az_diff) * 0.5  # 差异越小得分越高
+        score += max(0, 90 - az_diff) * 0.3  # 差异越小得分越高
         
         # 3. 距离惩罚（过远的点扣分）
         distance = np.hypot(
