@@ -5,24 +5,22 @@
 #include<semaphore.h>
 #include<fcntl.h>
 #include<unistd.h>
+/* 下象棋示例红棋red_chess.c */
 
-/* 下象棋示例黑棋black_chess.c */
 int main(int argc, char *argv[]){
     int i = 0;
-    sem_t *hei = sem_open("chess_black_sem", O_CREAT,0666,1);
+    sem_t *hei = sem_open("chess_black_sem", O_CREAT, 0666, 1);
     sem_t *hong = sem_open("chess_red_sem", O_CREAT, 0666, 0);
-    for ( i = 0; i < 10; i++)
-    {
-        sem_wait(hong);
+    for ( i = 0; i < 10; i++){
+        sem_wait(hei);
         if (i != 9)
         {
-            printf("Black chess had moved, red chess got!\n");
-            /* code */
+            printf("Red chess had moved, black chess go!\n");
         }else{
-            printf("Black chess lost!!!\n");
+            printf("Red chess win !!!\n");
         }
         fflush(stdout);
-        sem_post(hei); 
+        sem_post(hong);
     }
     sleep(10);
     sem_close(hei);
