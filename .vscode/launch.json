@@ -1,21 +1,19 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "(gdb) 启动",
             "type": "cppdbg",
             "request": "launch",
-            "program": "输入程序名称，例如 ${workspaceFolder}/a.exe",
+            "program": "${workspaceFolder}/a.exe",
+            "preLaunchTask": "build",
             "args": [],
-            "stopAtEntry": false,
+            "stopAtEntry": true,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "/path/to/gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",
@@ -29,6 +27,5 @@
                 }
             ]
         }
-
     ]
 }
