@@ -1,6 +1,7 @@
 from scrapy import Spider
 from bookScrapy.items import BookscrapyItem
 
+
 class BookSpider(Spider):
     name = 'book'
     start_urls = ['https://books.toscrape.com/']
@@ -21,7 +22,7 @@ class BookSpider(Spider):
             # 星级
             star = book.xpath('article/p[contains(@class, "star-rating")]/@class').get()
             star = star.split()[-1] if star else '未知'
-            # 价格
+            # 价格 
             price = book.xpath('article/div[2]/p[@class="price_color"]/text()').get()
             price = price.strip() if price else '未知'
             # 封面图片网址

@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "bookScrapy.spiders"
 #USER_AGENT = "bookScrapy (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -71,8 +71,16 @@ ROBOTSTXT_OBEY = True
 # 开启管道文件
 
 ITEM_PIPELINES = {
+   # 图片下载管道放在前面（数值越小，越早执行）
+   "bookScrapy.pipelines.MyImagesPipeline": 200,
    "bookScrapy.pipelines.BookscrapyPipeline": 300,
 }
+
+# 本地图片保存目录（相对于运行目录或可使用绝对路径）
+IMAGES_STORE = 'images'
+
+# 允许媒体重定向
+MEDIA_ALLOW_REDIRECTS = True
 
 
 
