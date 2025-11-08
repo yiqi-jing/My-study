@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hadoop数据清洗项目文档分析</title>
+    <style>
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 900px;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hadoop数据清洗项目文档分析</h1>
+    
+    <a href="#" class="download-btn" onclick="exportToWord()">下载Word文档</a>
+    
+    <h2>1. 项目概述</h2>
+    <p>这是一个基于Hadoop MapReduce框架的数据清洗程序，主要用于处理订单数据，过滤无效记录并统计清洗结果。</p>
+    
+    <h2>2. 主要组件</h2>
+    
+    <h3>2.1 DataCleaningMapper 类</h3>
+    <ul>
+        <li>功能：实现数据清洗逻辑的Mapper类</li>
+        <li>继承关系：继承自Mapper&lt;LongWritable, Text, Text, NullWritable&gt;</li>
+        <li>输入输出：
+            <ul>
+                <li>输入：&lt;LongWritable, Text&gt; (行偏移量, 文本行)</li>
+                <li>输出：&lt;Text, NullWritable&gt; (有效记录, 空值)</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h3>2.2 DataCleaningCounters 枚举</h3>
+    <p>定义了多种计数器用于统计不同类型的数据质量问题：</p>
+    <ul>
+        <li>TOTAL_RECORDS：总记录数</li>
+        <li>VALID_RECORDS：有效记录数</li>
+        <li>INVALID_RECORDS：无效记录数</li>
+        <li>各种具体无效原因计数器（如缺失客户ID、无效金额等）</li>
+    </ul>
+    
+    <h3>2.3 字段索引常量</h3>
+    <p>定义了各关键字段在CSV中的位置索引：</p>
+    <pre>
+private static final int CUSTOMER_ID_INDEX = 1;         // 客户ID（第2列）
+private static final int Name_index = 2;                // 客户姓名（第3列）
+private static final int Age_INDEX = 10;                // 客户年龄（第11列）
+private static final int AMOUNT_INDEX = 18;             // 消费金额（第19列）
+private static final int product_category_index = 19;   // 产品类别（第20列）
+private static final int Payment_Method_INDEX = 24;     // 支付方式（第25列）
+private static final int Order_Status_INDEX = 25;       // 订单状态（第26列）
+    </pre>
+    
+    <h2>3. 数据清洗逻辑</h2>
+    
+    <h3>3.1 清洗规则</h3>
+    <ul>
+        <li>空行检查：跳过空行</li>
+        <li>客户ID检查：确保非空</li>
+        <li>金额检查：
+            <ul>
+                <li>必须是有效数字</li>
+                <li>必须大于0</li>
+            </ul>
+        </li>
+        <li>产品类别检查：确保非空</li>
+        <li>客户姓名检查：确保非空</li>
+        <li>支付方式检查：确保非空</li>
+        <li>订单状态检查：确保非空</li>
+        <li>年龄检查：
+            <ul>
+                <li>必须是有效数字</li>
+                <li>必须在1-120之间</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h3>3.2 处理流程</h3>
+    <ul>
+        <li>每行数据首先增加总记录数计数器</li>
+        <li>按顺序执行各项检查</li>
+        <li>任何一项检查失败则：
+            <ul>
+                <li>增加相应错误类型计数器</li>
+                <li>增加无效记录计数器</li>
+                <li>跳过该记录</li>
+            </ul>
+        </li>
+        <li>所有检查通过则：
+            <ul>
+                <li>增加有效记录计数器</li>
+                <li>输出原始行数据</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h2>4. 主程序逻辑</h2>
+    
+    <h3>4.1 作业配置</h3>
+    <ul>
+        <li>设置Mapper类为DataCleaningMapper</li>
+        <li>不设置Reducer (job.setNumReduceTasks(0))</li>
+        <li>输入输出路径从命令行参数获取</li>
+    </ul>
+    
+    <h3>4.2 执行后统计</h3>
+    <p>作业完成后打印详细的清洗统计信息：</p>
+    <ul>
+        <li>基本任务信息</li>
+        <li>录入数据统计（总记录数、有效记录数、无效记录数）</li>
+        <li>无效记录原因分析</li>
+        <li>有效数据占有率计算</li>
+    </ul>
+    
+    <h2>5. 使用说明</h2>
+    
+    <h3>5.1 运行命令</h3>
+    <pre>hadoop jar DataCleaning.jar &lt;input path&gt; &lt;output path&gt;</pre>
+    
+    <h3>5.2 参数要求</h3>
+    <ul>
+        <li>必须提供2个参数：输入路径和输出路径</li>
+        <li>参数数量不正确时会报错退出</li>
+    </ul>
+    
+    <h2>6. 输出示例</h2>
+    <p>程序运行后会输出类似以下信息：</p>
+    <pre>
+=== 路径显示 ===
+文件地址: 2
+文件 0: [input/path]
+文件 1: [output/path]
+
+=== 数据清洗详情 ===
+清洗任务: Order Data Cleaning
+输入路径: input/path
+输出路径: output/path
+
+=== 录入数据统计 ===
+总处理记录数: 10000
+有效记录数: 8500
+无效记录数: 1500
+
+=== 无效记录原因分析 ===
+缺失客户ID记录数: 200
+缺失客户姓名记录数: 150
+无效年龄记录数: 300
+无效金额记录数: 250
+缺失产品类别记录数: 100
+缺失支付方式记录数: 200
+缺失订单状态记录数: 300
+
+有效数据占有率: 85.0000%
+    </pre>
+    
+    <h2>7. 代码特点</h2>
+    <ul>
+        <li>全面的数据验证：对多个关键字段进行严格验证</li>
+        <li>详细的统计信息：通过计数器记录各种数据质量问题</li>
+        <li>清晰的输出：提供格式化的清洗结果报告</li>
+        <li>无Reducer设计：简单清洗任务只需Mapper即可完成</li>
+        <li>错误隔离：每种错误类型都有独立计数器</li>
+    </ul>
+    
+    <h2>8. 改进建议</h2>
+    <ul>
+        <li>可考虑添加字段格式验证（如邮箱、日期等）</li>
+        <li>可增加对字段长度的限制检查</li>
+        <li>可考虑将验证规则配置化，提高灵活性</li>
+        <li>可添加对CSV列数的验证，防止数组越界</li>
+    </ul>
+
+    <script>
+        function exportToWord() {
+            // Get the HTML content to export
+            const content = document.documentElement.innerHTML;
+            
+            // Create a Blob with the HTML content
+            const blob = new Blob(['<html>' + content + '</html>'], {
+                type: 'application/msword'
+            });
+            
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Hadoop数据清洗项目文档分析.doc';
+            
+            // Trigger the download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

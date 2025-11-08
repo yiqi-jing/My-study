@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HDFS文件系统操作类E_commerce分析</title>
+    <style>
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>HDFS文件系统操作类E_commerce分析</h1>
+    
+    <a href="#" class="download-btn" onclick="exportToWord()">下载Word文档</a>
+    
+    <p>这段Java代码实现了一个HDFS文件系统操作类E_commerce，主要用于创建目录、上传数据和验证数据完整性。代码使用了Hadoop的HDFS API来完成这些操作。</p>
+    
+    <h2>代码结构分析</h2>
+    
+    <h3>1. 类定义与初始化</h3>
+    <pre>
+package hadoop;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.*;
+import org.junit.Before;
+import org.junit.Test;
+import java.io.IOException;
+
+public class E_commerce {
+    FileSystem fs = null;
+    </pre>
+    <ul>
+        <li>类名为E_commerce，位于hadoop包下</li>
+        <li>主要导入了Hadoop的Configuration和FileSystem相关类</li>
+        <li>使用JUnit的@Before和@Test注解进行单元测试</li>
+    </ul>
+    
+    <h3>2. 初始化方法</h3>
+    <pre>
+@Before
+public void init() throws IOException {
+    // 构建配置参数对象：Configuration
+    Configuration conf = new Configuration();
+    // 设置参数，指定要访问的文件系统的类型：HDFS文件系统
+    conf.set("fs.defaultFS", "hdfs://node1:9000");
+    // 设置客户端的访问身份，以root身份访问HDFS
+    System.setProperty("HADOOP_USER_NAME", "root");
+    // 通过FileSystem类静态方法，获取客户端访问对象
+    fs = FileSystem.get(conf);
+}
+    </pre>
+    <ul>
+        <li>使用@Before注解，表示在每个测试方法执行前都会运行</li>
+        <li>创建Hadoop配置对象Configuration</li>
+        <li>设置HDFS的默认文件系统地址为hdfs://node1:9000</li>
+        <li>设置客户端以root身份访问HDFS</li>
+        <li>获取FileSystem实例，用于后续操作</li>
+    </ul>
+    
+    <h2>测试方法分析</h2>
+    
+    <h3>1. 创建原始数据目录</h3>
+    <pre>
+@Test
+public void rawDirectory() throws IOException {
+    // 创建目录
+    Path dirPath = new Path("/user/retail/raw_data");
+    if (!fs.exists(dirPath)) {
+        fs.mkdirs(dirPath);
+        System.out.println("目录创建成功：" + dirPath);
+    } else {
+        System.out.println("目录已存在：" + dirPath);
+    }
+}
+    </pre>
+    <ul>
+        <li>使用@Test注解标记为测试方法</li>
+        <li>创建Path对象指定目录路径/user/retail/raw_data</li>
+        <li>检查目录是否存在，不存在则创建</li>
+        <li>输出创建结果信息</li>
+    </ul>
+    
+    <h3>2. 创建分析目录</h3>
+    <pre>
+@Test
+public void analysisctory() throws IOException {
+    // 创建目录 
+    Path dirPath = new Path("/user/retail/analysis"); 
+    if (!fs.exists(dirPath)) {
+        fs.mkdirs(dirPath);
+        System.out.println("目录创建成功：" + dirPath);
+    } else {
+        System.out.println("目录已存在：" + dirPath);
+    }
+}
+    </pre>
+    <ul>
+        <li>类似于rawDirectory方法</li>
+        <li>创建分析目录/user/retail/analysis</li>
+        <li>同样检查目录是否存在后再创建</li>
+    </ul>
+    
+    <h3>3. 上传原始数据</h3>
+    <pre>
+@Test
+public void uploadRawData() throws IOException {
+    // 创建本地上传路径的Path对象
+    Path src = new Path("F:/Hadoop_data/sj/retail_data.csv2");
+    Path dst = new Path("/user/retail/raw_data/retail_data.csv2");
+    // 上传文件
+    fs.copyFromLocalFile(src, dst);
+    // 关闭资源
+    fs.close();
+    System.out.println("原始数据上传成功：" + dst);
+}
+    </pre>
+    <ul>
+        <li>指定本地文件路径F:/Hadoop_data/sj/retail_data.csv2</li>
+        <li>指定HDFS目标路径/user/retail/raw_data/retail_data.csv2</li>
+        <li>使用copyFromLocalFile方法上传文件</li>
+        <li>关闭FileSystem资源</li>
+        <li>输出上传成功信息</li>
+    </ul>
+    
+    <h3>4. 验证数据完整性</h3>
+    <pre>
+@Test
+public void verifyRawData() throws IOException {
+    Path dirPath = new Path("/user/retail/raw_data");
+    if (fs.exists(dirPath)) {
+        FileStatus[] fileStatuses = fs.listStatus(dirPath);
+        System.out.println("目录内容:");
+        for (FileStatus fileStatus : fileStatuses) {
+            System.out.println("文件名: " + fileStatus.getPath().getName());
+            System.out.println("文件大小: " + fileStatus.getLen());
+            System.out.println("-----------------------------");
+        }
+    } else {
+        System.out.println("目录不存在: " + dirPath);
+    }
+}
+    </pre>
+    <ul>
+        <li>检查/user/retail/raw_data目录是否存在</li>
+        <li>如果存在，列出目录下所有文件的状态信息</li>
+        <li>输出每个文件的名称和大小</li>
+        <li>如果目录不存在，输出提示信息</li>
+    </ul>
+    
+    <h2>代码优缺点分析</h2>
+    
+    <h3>优点</h3>
+    <ul>
+        <li>模块化设计：每个功能都有独立的方法，职责单一</li>
+        <li>异常处理：方法都声明了throws IOException，考虑了可能的IO异常</li>
+        <li>资源管理：在uploadRawData方法中正确关闭了FileSystem资源</li>
+        <li>状态检查：在创建目录前检查是否存在，避免重复创建</li>
+        <li>日志输出：每个操作都有相应的输出信息，便于调试和监控</li>
+    </ul>
+    
+    <h3>改进建议</h3>
+    <ul>
+        <li>资源关闭：其他方法也应像uploadRawData一样关闭FileSystem资源</li>
+        <li>参数配置：HDFS地址和用户名可以提取为常量或配置文件</li>
+        <li>异常处理：可以添加更详细的异常捕获和处理逻辑</li>
+        <li>单元测试：可以增加更多的断言来验证操作结果</li>
+        <li>方法命名：analysisctory方法名可能有拼写错误，建议改为analysisDirectory</li>
+    </ul>
+    
+    <h2>单元测试建议</h2>
+    <p>根据JUnit的最佳实践，可以对该代码进行以下单元测试改进：</p>
+    <ul>
+        <li>使用断言：在测试方法中使用assertEquals等断言验证操作结果</li>
+        <li>测试清理：添加@After方法清理测试产生的目录和文件</li>
+        <li>异常测试：添加对异常情况的测试，如无权限访问等</li>
+        <li>模拟对象：可以使用Mockito等框架模拟HDFS环境进行隔离测试</li>
+    </ul>
+
+    <script>
+        function exportToWord() {
+            // Get the HTML content to export
+            const content = document.documentElement.innerHTML;
+            
+            // Create a Blob with the HTML content
+            const blob = new Blob(['<html>' + content + '</html>'], {
+                type: 'application/msword'
+            });
+            
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'HDFS文件系统操作类E_commerce分析.doc';
+            
+            // Trigger the download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
