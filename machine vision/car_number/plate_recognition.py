@@ -1,9 +1,10 @@
 import os
-import sys
+# import sys
 import re
 import numpy as np
 import glob
 import cv2
+from hyperlpr import HyperLPR_plate_recognition
 from plate_mappings import PROVINCE_MAP, SPECIAL_PLATE_TYPES
 # 解决 OpenCV 兼容性问题
 if not hasattr(cv2, 'estimateRigidTransform'):
@@ -18,17 +19,11 @@ if not hasattr(cv2, 'estimateRigidTransform'):
             except Exception:
                 return None
     cv2.estimateRigidTransform = _estimateRigidTransform
-
-try:
-    from hyperlpr import HyperLPR_plate_recognition
-except Exception as e:
-    HyperLPR_plate_recognition = None
-    print(f"警告：导入 hyperlpr 失败或不可用: {e}")
 # 解决numpy兼容问题
 if not hasattr(np, 'int'):
     np.int = np.int32
 # 调试开关
-DEBUG = False
+DEBUG = True
 # 常见车牌字符串后处理
 def postprocess_plate(plate_str):
     if not plate_str:
