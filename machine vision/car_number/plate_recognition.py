@@ -9,15 +9,8 @@ from plate_mappings import PROVINCE_MAP, SPECIAL_PLATE_TYPES
 # 解决 OpenCV 兼容性问题
 if not hasattr(cv2, 'estimateRigidTransform'):
     def _estimateRigidTransform(src, dst, fullAffine=False):
-        try:
-            M, inliers = cv2.estimateAffinePartial2D(src, dst)
-            return M
-        except Exception:
-            try:
-                M, inliers = cv2.estimateAffine2D(src, dst)
-                return M
-            except Exception:
-                return None
+        M, inliers = cv2.estimateAffinePartial2D(src, dst)
+        return M
     cv2.estimateRigidTransform = _estimateRigidTransform
 # 解决numpy兼容问题
 if not hasattr(np, 'int'):
@@ -118,7 +111,7 @@ def get_plate_color(image, plate_region):
 
     # 判定优先级：新能源绿 -> 蓝 -> 黄 -> 白 -> 红 -> 兜底
     if ratios.get('green', 0.0) >= 0.18:
-        return '新能源绿色'
+        return '新能源浅绿'
     if ratios.get('blue', 0.0) >= 0.18:
         return '蓝色'
     if ratios.get('yellow', 0.0) >= 0.18:
@@ -228,13 +221,13 @@ def check_plate_number_format(plate_str, plate_color):
         return False, None, "空车牌字符串"
     s = plate_str.upper()
     length = len(s)
-    if plate_color == "新能源绿色" or "新能源" in plate_str:
+    if plate_color == "新能源浅绿" or "新能源" in plate_str:
         return (length == 8), "2+6(总长8)", ("" if length == 8 else f"长度 {length} != 8")
     if plate_color == "蓝色":
         return (length == 7), "2+5(总长7)", ("" if length == 7 else f"长度 {length} != 7")
     return True, None, ""
 # 核心检测函数，支持多尺度检测
-def _detect_plates_hyperlpr(image, scales=(1.0, 0.8, 1.2)):
+def _detect_plates_hyperlpr(img_name,image, scales=(1.0, 0.8, 1.2)):
     all_results = []
     for scale in scales:
         try:
@@ -253,7 +246,7 @@ def _detect_plates_hyperlpr(image, scales=(1.0, 0.8, 1.2)):
 
         if DEBUG:
             try:
-                print(f"_detect_plates_hyperlpr: scale={scale}, 返回数量={len(res)}")
+                print(f"图片名称={img_name},检测车牌（使用hyperlpr技术）: 缩放比例={scale}, 识别结果={len(res)}")
             except Exception:
                 pass
 
@@ -296,10 +289,11 @@ def recognize_plate(image_path):
         return None, "无法读取图片", None, None
 
     enhanced_img = enhance_image_for_plate(image)
+    img_name = os.path.basename(image_path)
 
     try:
-        # 检测
-        candidates = _detect_plates_hyperlpr(enhanced_img, scales=(1.0, 0.8, 1.2))
+        # 多尺度检测
+        candidates = _detect_plates_hyperlpr(img_name,enhanced_img, scales=(1.0, 0.8, 1.2))
         if not candidates:
             # 回退：仅尝试以图像数组调用 hyperlpr（路径调用在某些版本会导致类型错误）
             direct = []
@@ -353,8 +347,8 @@ def recognize_plate(image_path):
 
         # 先判断是否为左黄右绿的新能源大型车牌
         if mapped_bbox and is_split_yellow_green_plate(enhanced_img, mapped_bbox):
-            plate_type = "新能源大型车辆"
-            plate_color = '新能源绿色'
+            plate_type = "新能源大型客车"
+            plate_color = '新能源绿黄'
         else:
             plate_color = get_plate_color(enhanced_img, mapped_bbox)
 
@@ -442,5 +436,4 @@ def batch_process(folder_path):
             "所属地区": location,
             "状态": status
         })
-    
     return results
