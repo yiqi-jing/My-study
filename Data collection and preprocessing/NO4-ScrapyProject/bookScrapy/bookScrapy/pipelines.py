@@ -28,6 +28,11 @@ class BookscrapyPipeline:
                 f.write(f"封面图片: {item.get('pic_url')}\n")
             f.write(f"详情页: {item['detail_url']}\n")
 
+        # videName = str(random.Random.random()) + '.mp4'
+        # savePath ='./videos/' + videName
+        # with open(savePath, 'wb') as f:
+        #     f.write(item['video_content'])
+
         return item
 
 logger = logging.Logger('MyImagesPipeline')

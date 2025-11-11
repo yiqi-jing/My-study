@@ -6,3 +6,5 @@ os.chdir(r"F:\My-study\Data collection and preprocessing\NO4-ScrapyProject\bookS
 
 # 执行爬虫命令
 cmdline.execute('scrapy crawl book'.split())
+
+# from scrapy import cmdline
