@@ -16,6 +16,8 @@ https://pypi.tuna.tsinghua.edu.cn/simple
 
 中国科学技术大学Mirror：https://chinanet.mirrors.ustc.edu.cn/
 
+Linux系统启动加速器
+curl -sSL https://steampp.net/Install/Linux.sh | bash
 
 scrapy文件的创建和运行
 scrapy startproject 项目名
