@@ -14,11 +14,11 @@ void *LittleMonk(void *p) {
         sem_wait(&empty);    // 等待水缸有空位（最多10桶水）
         sem_wait(&amount);   // 限制同时操作的和尚数量（最多3个）
         sem_wait(&mutex1);   // 保护水井操作（同一时间只能1个小和尚提水）
-        printf("第%d个小和尚在水井提水\n", *(int *)p);
+        printf("第%d个小和尚在水井提水/n", *(int *)p);
         sem_post(&mutex1);
         
         sem_wait(&mutex2);   // 保护水缸操作（修改fullcount需互斥）
-        printf("水缸已有%d桶水，第%d个小和尚在水缸旁倒水\n", fullcount, *(int *)p);
+        printf("水缸已有%d桶水，第%d个小和尚在水缸旁倒水/n", fullcount, *(int *)p);
         fullcount++;
         sem_post(&mutex2);
         
@@ -32,7 +32,7 @@ void *BigMonk(void *p) {
         sem_wait(&full);     // 等待水缸有水
         sem_wait(&amount);   // 限制同时操作的和尚数量（最多3个）
         sem_wait(&mutex2);   // 保护水缸操作（修改fullcount需互斥）
-        printf("\t水缸已有%d桶水,第%d个大和尚在水缸旁提水\n", fullcount, *(int *)p);
+        printf("/t水缸已有%d桶水,第%d个大和尚在水缸旁提水/n", fullcount, *(int *)p);
         fullcount--;
         sem_post(&mutex2);
         

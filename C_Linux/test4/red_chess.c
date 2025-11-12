@@ -15,9 +15,9 @@ int main(int argc, char *argv[]){
         sem_wait(hei);
         if (i != 9)
         {
-            printf("Red chess had moved, black chess go!\n");
+            printf("Red chess had moved, black chess go!/n");
         }else{
-            printf("Red chess win !!!\n");
+            printf("Red chess win !!!/n");
         }
         fflush(stdout);
         sem_post(hong);

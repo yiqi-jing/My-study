@@ -26,8 +26,8 @@ void *producer_fun(void *arg)
             pool[rear] = 1;
             rear = (rear + 1)%POOL_SIZE;
             // 改动1：(int)arg → (int)(intptr_t)arg
-            printf("profucer %d write to pool\n",(int)(intptr_t)arg);
-            printf("pool size is %d\n",(rear - head + POOL_SIZE)%POOL_SIZE);
+            printf("profucer %d write to pool/n",(int)(intptr_t)arg);
+            printf("pool size is %d/n",(rear - head + POOL_SIZE)%POOL_SIZE);
             pthread_mutex_unlock(&mutex);
             sem_post(&full_sem);
     
@@ -45,8 +45,8 @@ void *consumer_fun(void *arg)
         data = pool[head];
         head = (head + 1)%POOL_SIZE;
         // 改动2：(int)arg → (int)(intptr_t)arg
-        printf("consumer [%d] read from pool\n",(int)(intptr_t)arg);
-        printf("pool size is [%d]\n",(rear - head + POOL_SIZE)%POOL_SIZE);
+        printf("consumer [%d] read from pool/n",(int)(intptr_t)arg);
+        printf("pool size is [%d]/n",(rear - head + POOL_SIZE)%POOL_SIZE);
         pthread_mutex_unlock(&mutex);
         sem_post(&empty_sem);
         /* code */

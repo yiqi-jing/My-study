@@ -15,29 +15,29 @@ sem_t limit;
 
 void thinking(int id){
     sleep(TIME_THINK);
-    printf("philosopher[%d] is thinking...\n", id);
+    printf("philosopher[%d] is thinking.../n", id);
 }
 
 void eating(int id){
     sleep(TIME_EAT);
-    printf("philosopher[%d] is eating...\n", id);
+    printf("philosopher[%d] is eating.../n", id);
 }
 
 void take_forks(int id){
     sem_wait(&chopstick[left(id)]);
     sem_wait(&chopstick[right(id)]);
-    printf("philosopher[%d] is take_forks...\n", id);
+    printf("philosopher[%d] is take_forks.../n", id);
 }
 
 void put_down_forks(int id){
-    printf("philosopher[%d] is put_down_forks...\n", id);
+    printf("philosopher[%d] is put_down_forks.../n", id);
     sem_post(&chopstick[left(id)]);
     sem_post(&chopstick[right(id)]);
 }
 
 void *philosopher_work(void *arg){
     int id = *(int *)arg;
-    printf("philosopher init[%d]\n", id);
+    printf("philosopher init[%d]/n", id);
     while(1){
         thinking(id);
         sem_wait(&limit);  // 限制最多4个哲学家同时拿叉子，避免死锁
