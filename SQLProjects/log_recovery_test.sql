@@ -2,6 +2,7 @@
 -- 1. 创建测试数据库和表
 -- 创建测试数据库
 CREATE DATABASE IF NOT EXISTS log_recovery_test;
+
 USE log_recovery_test;
 
 -- 创建用户表
@@ -52,8 +53,9 @@ VALUES
 SELECT * FROM user_behavior ORDER BY user_id;
 
 -- 创建备份
-INSERT OVERWRITE TABLE user_behavior_backup PARTITION(dt)
-SELECT * FROM user_behavior WHERE dt='2024-01-15';
+INSERT OVERWRITE TABLE user_behavior_backup PARTITION(dt='2024-01-15')
+SELECT user_id, username, action, action_time, ip_address  -- 移除最后一个 dt
+FROM user_behavior WHERE dt='2024-01-15';
 
 -- 3. 模拟误操作
 -- 14:00: 模拟误操作 - 错误地清除了分区数据
@@ -70,7 +72,7 @@ SELECT COUNT(*) as remaining_records FROM user_behavior WHERE dt='2024-01-15';
 
 -- 从备份恢复数据
 INSERT OVERWRITE TABLE user_behavior PARTITION(dt='2024-01-15')
-SELECT user_id, username, action, action_time, ip_address, dt
+SELECT user_id, username, action, action_time, ip_address
 FROM user_behavior_backup 
 WHERE dt='2024-01-15';
 
