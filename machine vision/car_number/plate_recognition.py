@@ -108,11 +108,15 @@ def get_plate_color(image, plate_region):
     mean_s = float(np.mean(s_channel))
     mean_v = float(np.mean(v_channel))
     is_white = (mean_s <= 60 and mean_v >= 180)
+    # 新增黑色判断：S 低且 V 低
+    is_black = (mean_s <= 20 and mean_v <= 40)
 
     # 判定优先级：新能源绿 -> 蓝 -> 黄 -> 白 -> 红 -> 兜底
     if ratios.get('green', 0.0) >= 0.18:
         return '新能源浅绿'
-    if ratios.get('blue', 0.0) >= 0.18:
+    if is_black:
+        return '黑色'  # 新增黑色返回
+    if ratios.get('blue', 0.0) >= 0.31:
         return '蓝色'
     if ratios.get('yellow', 0.0) >= 0.18:
         return '黄色'
@@ -120,6 +124,7 @@ def get_plate_color(image, plate_region):
         return '白色'
     if red_ratio >= 0.12:
         return '红色'
+
 
     # 兜底：返回占比最大的颜色（若超过低阈值）
     candidates = {'blue': ratios.get('blue', 0.0), 'yellow': ratios.get('yellow', 0.0),
@@ -422,6 +427,12 @@ def batch_process(folder_path):
                 display_type = '警用车辆'
             else:
                 display_type = '军用车辆'
+        # 黑色 -> 港澳黑牌车辆（含港/澳字符）
+        elif '黑' in c:
+            if '港' in p or '澳' in p:
+                display_type = '港澳黑牌车辆'
+            else:
+                display_type = '特殊黑牌车辆'
         # 新能源分为小型/大型：若 earlier 识别为新能源大型车辆 则为新能源大型客车
         elif plate_type == '新能源大型车辆' or '新能源大型' in (plate_type or ''):
             display_type = '新能源大型客车'

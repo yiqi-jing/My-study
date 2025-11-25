@@ -15,23 +15,23 @@ imgpoints = []  # 2D points in image plane
 
 # 加载图像
 images = [
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/1.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/2.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/3.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/4.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/5.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/6.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/7.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/8.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/9.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/10.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/11.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/12.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/13.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/14.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/15.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/16.bmp',
-    'F:/Source-code-management-repository/MyHome/Machine vision/Data/17.bmp'
+    'machine vision/data/distort_images/1.bmp',
+    'machine vision/data/distort_images/2.bmp',
+    'machine vision/data/distort_images/3.bmp',
+    'machine vision/data/distort_images/4.bmp',
+    'machine vision/data/distort_images/5.bmp',
+    'machine vision/data/distort_images/6.bmp',
+    'machine vision/data/distort_images/7.bmp',
+    'machine vision/data/distort_images/8.bmp',
+    'machine vision/data/distort_images/9.bmp',
+    'machine vision/data/distort_images/10.bmp',
+    'machine vision/data/distort_images/11.bmp',
+    'machine vision/data/distort_images/12.bmp',
+    'machine vision/data/distort_images/13.bmp',
+    'machine vision/data/distort_images/14.bmp',
+    'machine vision/data/distort_images/15.bmp',
+    'machine vision/data/distort_images/16.bmp',
+    'machine vision/data/distort_images/17.bmp'
 ]
 
 for fname in images:
