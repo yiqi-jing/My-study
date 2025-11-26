@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 
 # 定义棋盘格的行数和列数
 ROWS = 23
@@ -13,7 +14,7 @@ objp[:, :2] = np.mgrid[0:COLS, 0:ROWS].T.reshape(-1, 2)
 objpoints = []  # 3D points in real world space
 imgpoints = []  # 2D points in image plane
 
-# 加载图像
+# 加载图像路径
 images = [
     'machine vision/data/distort_images/1.bmp',
     'machine vision/data/distort_images/2.bmp',
@@ -34,8 +35,16 @@ images = [
     'machine vision/data/distort_images/17.bmp'
 ]
 
+# 创建结果保存目录
+save_dir = 'camera_calibration_results'
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
+
 for fname in images:
     img = cv2.imread(fname)
+    if img is None:
+        print(f"警告：无法读取图像 {fname}，跳过该图像。")
+        continue
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # 查找棋盘格角点
@@ -45,8 +54,9 @@ for fname in images:
         objpoints.append(objp)
         imgpoints.append(corners)
 
-        # 绘制角点
+        # 绘制角点并保存
         cv2.drawChessboardCorners(img, (COLS, ROWS), corners, ret)
+        cv2.imwrite(os.path.join(save_dir, f"corners_{os.path.basename(fname)}"), img)
         cv2.imshow('img', img)
         cv2.waitKey(500)
 
@@ -55,46 +65,44 @@ cv2.destroyAllWindows()
 # 标定相机
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
+# 保存标定结果
+np.savez(os.path.join(save_dir, 'calibration_results.npz'), mtx=mtx, dist=dist, rvecs=rvecs, tvecs=tvecs)
 print("相机矩阵:")
 print(mtx)
 print("\n畸变系数:")
 print(dist)
 
-# ============== 新增：图像矫正部分 ==============
+# ============== 新增：图像矫正与批量处理 ==============
 
 if ret:
-    # 选择一张图像进行矫正，例如第一张图像
-    image_to_undistort_path = images[6]
-    img_to_undistort = cv2.imread(image_to_undistort_path)
-    if img_to_undistort is None:
-        print("错误：无法读取矫正图像。")
-    else:
+    # 批量矫正所有图像
+    for idx, fname in enumerate(images):
+        img_to_undistort = cv2.imread(fname)
+        if img_to_undistort is None:
+            print(f"错误：无法读取图像 {fname} 用于矫正。")
+            continue
         h, w = img_to_undistort.shape[:2]
 
-        # 计算新的最优相机矩阵，alpha=1 表示保留所有像素，可能会有黑边
+        # 计算新的最优相机矩阵
         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
 
         # 执行图像矫正
         dst = cv2.undistort(img_to_undistort, mtx, dist, None, newcameramtx)
 
-        # 根据ROI裁剪图像，去除黑边
+        # 裁剪黑边（可选，根据需求决定是否裁剪）
         x, y, w_roi, h_roi = roi
-        dst = dst[y:y+h_roi, x:x+w_roi]
-        img_to_undistort_cropped = img_to_undistort[y:y+h_roi, x:x+w_roi]  # 对原始图像做相同裁剪，以便对比
+        if all([x, y, w_roi, h_roi]):  # 确保ROI有效
+            dst = dst[y:y+h_roi, x:x+w_roi]
+            img_to_undistort_cropped = img_to_undistort[y:y+h_roi, x:x+w_roi]
+            combined = np.hstack((img_to_undistort_cropped, dst))
+            cv2.imwrite(os.path.join(save_dir, f"comparison_{idx+1}.bmp"), combined)
+        else:
+            cv2.imwrite(os.path.join(save_dir, f"undistorted_{idx+1}.bmp"), dst)
 
-        # 显示矫正前后的对比
-        # 将两张图片水平拼接
-        combined = np.hstack((img_to_undistort_cropped, dst))
-        cv2.imshow('矫正前后对比 - 左: 原始图像 | 右: 矫正后图像', combined)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-        # 分析结果
-        print("\n图像矫正分析：")
-        print("1. 从对比图可以看出，矫正后的图像（右侧）的直线边缘（如棋盘格的格线）变得更加平直，有效地修正了镜头的桶形或枕形畸变。")
-        print("2. 矫正过程可能会在图像边缘产生一些黑边，这是为了保证图像不失真而进行的裁剪。")
-        print("3. 整体图像的几何形状更加符合真实世界的物理结构。")
+    # 打印分析结果
+    print("\n图像矫正分析：")
+    print("1. 矫正后的图像直线边缘（如棋盘格）更平直，有效修正了桶形/枕形畸变。")
+    print("2. 若存在黑边，是为保证无失真的裁剪结果；可通过调整`getOptimalNewCameraMatrix`的`alpha`参数权衡失真与黑边。")
+    print("3. 矫正后图像几何结构更贴合真实世界，可提升后续视觉任务（如测量、识别）的精度。")
 else:
     print("标定失败，无法进行图像矫正。")
-
-
