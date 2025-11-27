@@ -5,10 +5,8 @@ from typing import List, Dict
 import re
 import time
 
-# 生成26个分页URL（1-26页）
 urls = [f"https://www.cnhnb.com/p/jiuhuang-0-0-0-0-{page}/" for page in range(1, 27)]
 
-# 请求头（模拟浏览器访问，避免被反爬）
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -17,7 +15,6 @@ headers = {
 }
 
 def fetch_html(url: str) -> str:
-    """获取网页HTML内容"""
     try:
         response = requests.get(url, headers=headers, timeout=30)
         response.encoding = response.apparent_encoding  # 自动识别编码
@@ -31,7 +28,6 @@ def fetch_html(url: str) -> str:
         return ""
 
 def parse_jiuhuang_data(html_content: str) -> List[Dict]:
-    """解析HTML，提取原始韭黄批发数据（不做任何修改）"""
     tree = etree.HTML(html_content)
     items = tree.xpath('//div[@class="supply-item"]')
     data_list = []
@@ -101,7 +97,6 @@ def parse_jiuhuang_data(html_content: str) -> List[Dict]:
     return data_list
 
 def crawl_online_jiuhuang() -> List[Dict]:
-    """批量爬取26个分页原始数据（不做去重，完整保留）"""
     all_data = []
     
     for url in urls:
@@ -111,7 +106,7 @@ def crawl_online_jiuhuang() -> List[Dict]:
             time.sleep(2)
             continue
         page_data = parse_jiuhuang_data(html)
-        all_data.extend(page_data)  # 直接添加，不做任何过滤
+        all_data.extend(page_data)
         print(f"该页爬取到{len(page_data)}条原始数据")
         time.sleep(2)  # 爬取间隔，避免请求过快
     
@@ -120,7 +115,7 @@ def crawl_online_jiuhuang() -> List[Dict]:
 def clean_jiuhuang_data(raw_data: List[Dict]) -> List[Dict]:
     """清洗韭黄批发数据：去重 + 补全空值"""
     cleaned_data = []
-    seen = set()  # 去重集合（基于核心字段）
+    seen = set()  # 去重集合
     
     for data in raw_data:
         # 1. 去重处理：基于核心字段判断，避免重复记录
@@ -129,9 +124,9 @@ def clean_jiuhuang_data(raw_data: List[Dict]) -> List[Dict]:
             continue
         seen.add(unique_key)
         
-        # 2. 补全空值（将"查无信息"替换为合理默认值）
+        # 2. 补全空值
         clean_data = data.copy()
-        # 价格补全（无法识别时保留原始值）
+        # 价格补全
         if clean_data["价格"] == "查无信息":
             clean_data["价格_清洗后"] = "暂无数据"
         else:
@@ -174,11 +169,10 @@ def clean_jiuhuang_data(raw_data: List[Dict]) -> List[Dict]:
     
     return cleaned_data
 
-# 执行在线爬取
 print("开始爬取26个分页的韭黄批发原始数据...")
 raw_result = crawl_online_jiuhuang()
 
-# 保存原始数据（完整保留，不做任何修改）
+# 保存原始数据
 raw_df = pd.DataFrame(raw_result)
 raw_df.to_csv("原始韭黄批发数据_26页.csv", index=False, encoding="utf-8-sig")
 print(f"\n原始数据保存完成！共获取{len(raw_result)}条原始数据")
