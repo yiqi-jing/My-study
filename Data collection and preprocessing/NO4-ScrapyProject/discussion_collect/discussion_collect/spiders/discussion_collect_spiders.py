@@ -10,8 +10,8 @@ import time
 import requests
 import threading
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+from tqdm import tqdm
 from scrapy import Spider, Request
-from scrapy.settings import Settings
 
 class DiscussionSpider(Spider):
     name = 'discussion_collect_spiders'
@@ -30,24 +30,21 @@ class DiscussionSpider(Spider):
     max_threads = 12
     download_futures = []
     
-    # 头像下载进度统计（线程安全）
+    # 头像下载统计（线程安全）
     total_avatar_tasks = 0
     successful_avatar_downloads = 0
-    progress_lock = threading.Lock()    # 线程锁保证计数安全
-    progress_completed = False  # 进度是否已完成（完成后停止所有进度输出）
+    lock = threading.Lock()    # 线程锁保证计数安全
     
-    # 横向进度条配置
-    PROGRESS_BAR_LENGTH = 20  # 进度条字符长度（越长越精细）
-    
-    # Scrapy配置：过滤所有非必要日志，仅保留警告/错误
-    custom_settings = {
-        'CONCURRENT_REQUESTS': 16,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 8,
-        'DOWNLOAD_DELAY': 0.2,
-        'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'LOG_LEVEL': 'WARNING',  # 仅输出WARNING及以上日志（过滤Scrapy默认INFO日志）
-        'LOG_STATS_INTERVAL': 0,  # 彻底关闭Scrapy进度统计日志
-    }
+    # tqdm进度条对象
+    data_pbar = None  # 数据爬取进度条
+    avatar_pbar = None  # 头像下载进度条
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 初始化tqdm进度条（在start_requests中实际创建）
+        self.data_pbar = None
+        self.avatar_pbar = None
 
     def start_requests(self):
         # 创建分离子文件夹（CSV和头像）
@@ -74,54 +71,22 @@ class DiscussionSpider(Spider):
             return ''
         return text.strip()
     
-    def generate_progress_bar(self, current, total):
-        """生成横向进度条字符串：[##########--------] 50.0% (1000/2000)"""
-        if total == 0:
-            progress = 0.0
-        else:
-            progress = min(current / total, 1.0)  # 防止进度超过100%
-        filled_length = int(self.PROGRESS_BAR_LENGTH * progress)
-        bar = '#' * filled_length + '-' * (self.PROGRESS_BAR_LENGTH - filled_length)
-        percent = progress * 100
-        return f'[{bar}] {percent:.1f}% ({current}/{total})'
-    
-    def update_avatar_progress(self, is_success):
-        """线程安全的进度更新：进度完成后彻底停止输出"""
-        with self.progress_lock:
-            # 进度完成后直接返回，不再执行任何输出
-            if self.progress_completed:
-                return
+    def update_progress(self):
+        """线程安全更新进度条显示"""
+        with self.lock:
+            # 更新数据进度条（当前爬取条数）
+            self.data_pbar.n = len(self.all_data)
+            self.data_pbar.refresh()  # 强制刷新显示
             
-            # 更新下载计数
-            if is_success:
-                self.successful_avatar_downloads += 1
-            
-            # 计算当前进度
-            data_current = len(self.all_data)
-            data_finished = (data_current >= self.target_count)
-            avatar_finished = (self.successful_avatar_downloads >= self.total_avatar_tasks)
-            
-            # 进度全部完成：标记并终止后续输出
-            if data_finished and avatar_finished:
-                self.progress_completed = True
-                # 最后输出一次完成状态
-                print('\033[2K\033[A\033[2K', end='', flush=True)
-                print(f'数据进度：{self.generate_progress_bar(data_current, self.target_count)}', flush=True)
-                print(f'头像进度：{self.generate_progress_bar(self.successful_avatar_downloads, self.total_avatar_tasks)}\n', flush=True)
-                return
-            
-            # 生成并刷新进度条（清除上两行+输出新进度）
-            data_bar = self.generate_progress_bar(data_current, self.target_count)
-            avatar_bar = self.generate_progress_bar(self.successful_avatar_downloads, self.total_avatar_tasks)
-            print('\033[2K\033[A\033[2K', end='', flush=True)
-            print(f'数据进度：{data_bar}', flush=True)
-            print(f'头像进度：{avatar_bar}', end='\r', flush=True)
-    
+            # 更新头像进度条总数（动态调整）
+            self.avatar_pbar.total = self.total_avatar_tasks
+            self.avatar_pbar.refresh()
+
     def download_avatar(self, avatar_url, author_name, topic_index):
         """头像下载核心方法（线程池执行）"""
         try:
             if not avatar_url:
-                self.update_avatar_progress(False)
+                self.update_progress()
                 return None
             
             # 处理作者名称，避免文件名非法字符
@@ -154,12 +119,16 @@ class DiscussionSpider(Spider):
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
             
-            self.update_avatar_progress(True)
+            # 线程安全更新成功数和进度条
+            with self.lock:
+                self.successful_avatar_downloads += 1
+                self.avatar_pbar.update(1)  # 头像进度条+1
+            self.update_progress()
             return filepath
         except Exception as e:
             # 仅输出关键错误（WARNING级别，避免干扰）
             self.logger.warning(f'头像下载失败 | 作者：{author_name} | 错误：{str(e)[:100]}')
-            self.update_avatar_progress(False)
+            self.update_progress()
             return None
 
     def parse_topic_list(self, response):
@@ -258,7 +227,7 @@ class DiscussionSpider(Spider):
                 self.all_data.append(topic_info)
                 
                 # 更新头像任务数
-                with self.progress_lock:
+                with self.lock:
                     self.total_avatar_tasks += 1
                 
                 # 提交头像下载任务
@@ -271,8 +240,8 @@ class DiscussionSpider(Spider):
                 )
                 self.download_futures.append(future)
                 
-                # 更新进度
-                self.update_avatar_progress(False)
+                # 更新进度条
+                self.update_progress()
 
             # 请求下一页
             if len(self.all_data) < self.target_count:
@@ -309,6 +278,15 @@ class DiscussionSpider(Spider):
         # 关闭线程池
         if self.thread_pool:
             self.thread_pool.shutdown(wait=True)
+
+        # 关闭并刷新进度条（确保最终状态显示）
+        if self.data_pbar:
+            self.data_pbar.n = len(self.all_data[:self.target_count])
+            self.data_pbar.refresh()
+            self.data_pbar.close()
+        if self.avatar_pbar:
+            self.avatar_pbar.refresh()
+            self.avatar_pbar.close()
 
         # 计算最终统计数据
         data_total = len(self.all_data[:self.target_count])

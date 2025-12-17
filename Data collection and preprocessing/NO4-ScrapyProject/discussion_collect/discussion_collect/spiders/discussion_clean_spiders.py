@@ -8,6 +8,7 @@ import os
 import locale
 import re
 from datetime import datetime
+from tqdm import tqdm  # 新增：导入tqdm进度条库
 from scrapy import Spider
 
 class DiscussionSpider(Spider):
@@ -180,6 +181,17 @@ class DiscussionSpider(Spider):
             self.logger.error(f"读取CSV文件失败: {str(e)}")
             return
         
+        # ========== 核心修改：初始化tqdm进度条 ==========
+        # 样式和前序爬虫保持一致（绿色、宽度80、描述清晰）
+        pbar = tqdm(
+            total=len(data),
+            desc="数据清洗进度",
+            unit="条",
+            ncols=80,
+            colour="green",
+            leave=True
+        )
+        
         # 处理空值 + 日期格式 + 数值转换 + 特殊字符过滤 + 精准统计
         cleaned_data = []
         null_replace_count = 0  # 空值替换计数器
@@ -221,6 +233,12 @@ class DiscussionSpider(Spider):
                 cleaned_row[numeric_field] = converted_numeric
             
             cleaned_data.append(cleaned_row)
+            
+            # ========== 核心修改：更新进度条 ==========
+            pbar.update(1)
+        
+        # ========== 核心修改：关闭进度条 ==========
+        pbar.close()
         
         # 处理重复值
         seen = set()
