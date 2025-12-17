@@ -1,3 +1,9 @@
+"""  
+此子项目的主要内容是对清洗后的文件中的数值进行噪声识别与替换，
+采用IQR原则对数值型字段进行噪声识别，采用频率
+原则对类别型字段进行噪声识别，
+均采用众数进行替换。
+"""
 from scrapy import Spider
 import pandas as pd
 import numpy as np

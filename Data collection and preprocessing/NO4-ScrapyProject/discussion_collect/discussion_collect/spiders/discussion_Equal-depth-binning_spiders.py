@@ -1,3 +1,8 @@
+"""
+此子项目的主要内容是对清洗后的文件中的数值进行等深分箱处理，
+并对分箱结果进行均值/中值/边界值平滑处理，
+以便后续的数据分析与建模使用。 
+"""
 from scrapy import Spider
 import numpy as np
 import math
