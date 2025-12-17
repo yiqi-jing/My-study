@@ -1,5 +1,6 @@
 """  
-此子项目用于实现归一化（Normalization）方法中的Z-Score归一化（Z-Score Normalization）。"""
+此子项目用于实现归一化（Normalization）方法中的Z-Score归一化（Z-Score Normalization）。
+"""
 from scrapy import Spider
 
 class DiscussionSpider(Spider):
