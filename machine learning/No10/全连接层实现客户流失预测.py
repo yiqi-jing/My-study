@@ -269,8 +269,8 @@ print("\n=== 特征重要性分析（相关系数绝对值）===")
 for feat, corr in sorted(zip(feature_corr.index, abs(feature_corr.values)), key=lambda x: x[1], reverse=True):
     print(f"{feat}: {corr:.4f}")
 
-print("\n=== 关键结论 ===")
-top_feat = sorted(zip(feature_corr.index, abs(feature_corr.values)), key=lambda x: x[1], reverse=True)[0][0]
-print(f"对客户流失影响最大的特征是：{top_feat}")
-print(
-    "原因：该特征与流失标签的相关性最高，直接反映了客户的留存意愿（如高月消费客户可能因成本因素更易流失，短期合约客户留存稳定性差）")
+# print("\n=== 关键结论 ===")
+# top_feat = sorted(zip(feature_corr.index, abs(feature_corr.values)), key=lambda x: x[1], reverse=True)[0][0]
+# print(f"对客户流失影响最大的特征是：{top_feat}")
+# print(
+#     "原因：该特征与流失标签的相关性最高，直接反映了客户的留存意愿（如高月消费客户可能因成本因素更易流失，短期合约客户留存稳定性差）")
