@@ -1,6 +1,7 @@
 import csv
 import os
 import locale
+import re
 from datetime import datetime
 from scrapy import Spider
 
@@ -21,6 +22,12 @@ class DiscussionSpider(Spider):
     }
     # 数值转换时的无效值（跳过这些值的转换）
     numeric_invalid_values = ['未获取到信息', 'NaN', 'None', '', ' ', 'N/A', '暂无数据']
+    
+    # ===== 新增：特殊字符过滤配置 =====
+    # 允许保留的字符正则表达式（中文、字母、数字、常见标点、空格、小数点）
+    ALLOWED_CHARS_PATTERN = r'[^\u4e00-\u9fa5a-zA-Z0-9\s\.,，。！？；;:""''（）\(\)-_=+\[\]{}、·…—]'
+    # 统计特殊字符过滤次数
+    special_char_remove_count = 0
 
     def start_requests(self):
         """启动数据清洗流程"""
@@ -28,6 +35,32 @@ class DiscussionSpider(Spider):
         self.clean_csv_data()
         self.logger.warning("数据预处理完成")
         return  # 不发起网络请求
+    
+    # ===== 新增：特殊字符过滤函数 =====
+    def remove_special_chars(self, text):
+        """
+        过滤文本中的特殊字符，仅保留允许的字符
+        :param text: 原始文本
+        :return: 过滤后的文本
+        """
+        if not text or text == "未获取到信息":
+            return text
+        
+        # 确保输入是字符串
+        if not isinstance(text, str):
+            text = str(text)
+        
+        # 记录过滤前的文本长度（用于统计）
+        original_length = len(text)
+        
+        # 过滤特殊字符
+        cleaned_text = re.sub(self.ALLOWED_CHARS_PATTERN, '', text)
+        
+        # 统计过滤次数（只要有字符被移除就算一次）
+        if len(cleaned_text) < original_length:
+            self.special_char_remove_count += 1
+        
+        return cleaned_text.strip() or "未获取到信息"
     
     def convert_date_format(self, date_str):
         """
@@ -113,7 +146,10 @@ class DiscussionSpider(Spider):
             return 0 if target_type == int else 0.0
 
     def clean_csv_data(self):
-        """处理CSV文件中的空值、重复值、日期格式 + 新增数值字段类型转换"""
+        """处理CSV文件中的空值、重复值、日期格式 + 新增数值字段类型转换 + 特殊字符过滤"""
+        # 重置特殊字符过滤计数器
+        self.special_char_remove_count = 0
+        
         # 检查输入文件是否存在
         if not os.path.exists(self.input_csv_path):
             self.logger.error(f"输入文件不存在: {self.input_csv_path}")
@@ -139,7 +175,7 @@ class DiscussionSpider(Spider):
             self.logger.error(f"读取CSV文件失败: {str(e)}")
             return
         
-        # 处理空值 + 日期格式 + 数值转换 + 精准统计
+        # 处理空值 + 日期格式 + 数值转换 + 特殊字符过滤 + 精准统计
         cleaned_data = []
         null_replace_count = 0  # 空值替换计数器
         date_convert_fail_count = 0  # 日期转换失败计数器
@@ -155,7 +191,9 @@ class DiscussionSpider(Spider):
                     cleaned_row[key] = "未获取到信息"
                     null_replace_count += 1
                 else:
-                    cleaned_row[key] = str_value
+                    # ===== 新增：过滤特殊字符 =====
+                    cleaned_value = self.remove_special_chars(str_value)
+                    cleaned_row[key] = cleaned_value
             
             # 单独处理发布时间的日期格式
             original_time = cleaned_row[self.publish_time_field]
@@ -164,7 +202,7 @@ class DiscussionSpider(Spider):
                 date_convert_fail_count += 1
             cleaned_row[self.publish_time_field] = converted_time
             
-            # ===== 新增：数值字段类型转换 =====
+            # ===== 数值字段类型转换 =====
             for numeric_field, target_type in self.numeric_fields.items():
                 original_numeric = cleaned_row[numeric_field]
                 # 安全转换数值
@@ -193,7 +231,9 @@ class DiscussionSpider(Spider):
         duplicate_count = len(cleaned_data) - len(unique_data)
         self.logger.warning(f"空值处理完成，共替换 {null_replace_count} 处空值（已标注为未获取到信息）")
         self.logger.warning(f"日期格式转换完成，共 {date_convert_fail_count} 条记录转换失败(已从英语转换为中文格式)")
-        # 新增：打印数值转换统计
+        # 新增：特殊字符过滤统计
+        self.logger.warning(f"特殊字符过滤完成，共处理 {self.special_char_remove_count} 条包含特殊字符的记录（已过滤@#$%^&*等特殊字符）")
+        # 数值转换统计
         for field, stats in numeric_convert_stats.items():
             total = stats['success'] + stats['fail']
             self.logger.warning(f"【{field}】数值转换完成：成功 {stats['success']} 条，失败 {stats['fail']} 条（总计 {total} 条）")
