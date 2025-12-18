@@ -1,0 +1,38 @@
+正文：<p dir="auto"><a href="https://start.fedoraproject.org/" data-clicks="89" aria-label="https://start.fedoraproject.org/ 链接已点击 89 次">https://start.fedoraproject.org/</a> is the default homepage on a fresh Fedora installation, it is the first thing that users sees when they open Firefox.<br>
+We’ve been working to revamp the design of the page and here is the resulting mock-up</p>
+        //*[@id="post_1"]/div[1]/div[2]/div[2]/div/p[1]
+评论1：<div class="cooked"><p dir="auto">Awesome! I like the overall direction. A few comments:</p>
+<ul dir="auto">
+<li>The top has a lot of empty space</li>
+<li>We probably want to keep the “A Red Hat-Sponsored Community Project” prominently displayed</li>
+<li>I suggest removing the “Start” or coming up with different text. But I don’t think it adds anything</li>
+<li>It might be good to add “from Ask Fedora” or something under “Latest Solved Issues”</li>
+<li>I like the fewer &amp; larger Magazine articles</li>
+<li>Should we add the latest Community Blog articles under Magazine? I’m not sure how I feel about that myself.</li>
+</ul><div class="cooked-selection-barrier" aria-hidden="true"><br></div></div>
+        //*[@id="post_2"]/div/div[2]/div[2]/div
+评论人：<a href="/u/bcotton" data-user-card="bcotton" aria-label="bcotton 的个人资料" tabindex="0">
+      
+                Ben Cotton
+<!---->              
+    </a>
+    //*[@id="post_2"]/div/div[2]/div[1]/div[1]/span[1]/a
+
+评论2：<div class="cooked"><p dir="auto">First, It looks fantastic</p>
+<ul dir="auto">
+<li>On bottom or right side, I would like to see “respin” URL as well for “updated ISO(s)”</li>
+<li>Link to Pagure</li>
+<li>Link to “fedora apps”</li>
+<li>Community blogs post +1</li>
+<li>Maybe pointing “Fedora join” in special place on top right or somewhere suitable</li>
+<li>Bring back “fedora planet” as well <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20" style="aspect-ratio: 20 / 20;"> (An oldies but goodies)</li>
+</ul>
+<p dir="auto">I know that’s all come to my mind at the moment</p>
+<p dir="auto">Thank you <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20" style="aspect-ratio: 20 / 20;"></p><div class="cooked-selection-barrier" aria-hidden="true"><br></div></div>
+        //*[@id="post_3"]/div/div[2]/div[2]/div
+评论人：<a href="/u/thunderbirdtr" data-user-card="thunderbirdtr" aria-label="thunderbirdtr 的个人资料" tabindex="0">
+      
+                Onuralp SEZER
+<!---->              
+    </a>
+    //*[@id="post_3"]/div/div[2]/div[1]/div[1]/span[1]/a
