@@ -88,17 +88,11 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 
 # Set settings whose default value is deprecated to a future-proof value
-# ==============================================
-# 基础兼容性设置（解决弃用警告）
-# ==============================================
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-# ==============================================
-# 基础反爬配置（去重并优化原有配置）
-# ==============================================
-# User-Agent（建议结合随机User-Agent中间件使用）
+# User-Agent设置为常见浏览器，避免被轻易识别为爬虫
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
 
 # 并发与延迟（核心反爬，使用随机范围替代固定值）
@@ -109,27 +103,24 @@ DOWNLOAD_DELAY = 1.0  # 基础延迟
 RANDOMIZE_DOWNLOAD_DELAY = True  # 新增：开启随机延迟（实际延迟为0.5*DOWNLOAD_DELAY ~ 1.5*DOWNLOAD_DELAY）
 DOWNLOAD_TIMEOUT = 20  # 超时时间
 
-# 日志配置（减少暴露）
+# 日志配置
 LOG_LEVEL = 'WARNING'  # 只输出警告及以上日志
-LOG_FILE = 'scrapy_logs.log'  # 新增：日志写入文件，避免控制台输出暴露
-LOG_STDOUT = False  # 新增：禁止将日志输出到标准输出
+LOG_FILE = 'scrapy_logs.log'  # 日志写入文件，避免控制台输出暴露
+LOG_STDOUT = False  # 禁止将日志输出到标准输出
 
-# SSL与请求安全（禁用不必要的验证）
+# SSL与请求安全，跳跃不必要的验证
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SSL_VERIFY = False  # 禁用SSL证书验证
 ROBOTSTXT_OBEY = False  # 不遵守robots.txt规则
-TELNETCONSOLE_ENABLED = False  # 禁用Telnet控制台（避免暴露爬虫信息）
+TELNETCONSOLE_ENABLED = False  # 禁用Telnet控制台
 
-# ==============================================
-# 高级反爬配置（新增核心反爬策略）
-# ==============================================
-# 1. 重试策略（更智能的重试，避免频繁重试触发反爬）
+# 1. 重试策略
 RETRY_TIMES = 2  # 重试次数
 RETRY_HTTP_CODES = [408, 500, 502, 503, 504, 429]  # 新增429（请求过于频繁）
-RETRY_PRIORITY_ADJUST = -1  # 新增：重试请求优先级降低，避免集中重试
+RETRY_PRIORITY_ADJUST = -1  # 重试请求优先级降低，避免集中重试
 
-# 2. Cookies处理（模拟真实用户）
+# Cookies处理
 COOKIES_ENABLED = True
 COOKIES_DEBUG = False  # 禁用Cookies调试日志
 DEFAULT_REQUEST_HEADERS = {  # 新增：完善请求头，模拟真实浏览器
@@ -141,34 +132,31 @@ DEFAULT_REQUEST_HEADERS = {  # 新增：完善请求头，模拟真实浏览器
     'Cache-Control': 'max-age=0',
 }
 
-# 3. 自动限速（动态调整爬取速度）
+# 限速
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1  # 初始延迟
-AUTOTHROTTLE_MAX_DELAY = 10  # 最大延迟（从5提升，应对反爬严格的网站）
-AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0  # 新增：目标并发数（更保守）
+AUTOTHROTTLE_MAX_DELAY = 10  # 最大延迟
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0  # 目标并发数
 AUTOTHROTTLE_DEBUG = False  # 禁用自动限速调试
 
-# 4. 请求指纹（避免被识别为Scrapy爬虫）
+# 指纹识别隐藏Scrapy爬虫
 REQUEST_FINGERPRINTER_IMPLEMENTATION = '2.7'
 DEFAULT_REQUEST_HEADERS.pop('User-Agent', None)  # 配合随机User-Agent中间件
 
-# 5. 下载中间件（核心反爬组件，需安装依赖）
+# 下载中间件
 DOWNLOADER_MIDDLEWARES = {
     # 随机User-Agent中间件（需安装：pip install scrapy-user-agents）
     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     
-    # 随机代理IP中间件（需自行实现或使用第三方库）
-    # 'your_project.middlewares.ProxyMiddleware': 410,
-    
-    # 禁用默认的重试中间件（使用自定义策略）
+    # 禁用默认的重试中间件
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': 550,
     
-    # 启用压缩中间件（模拟真实浏览器）
+    # 启用压缩中间件
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 590,
 }
 
-# 6. 爬虫中间件（避免暴露爬虫信息）
+# 伪装爬虫中间件
 SPIDER_MIDDLEWARES = {
     'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware': 50,
     'scrapy.spidermiddlewares.offsite.OffsiteMiddleware': 500,
@@ -177,9 +165,9 @@ SPIDER_MIDDLEWARES = {
     'scrapy.spidermiddlewares.depth.DepthMiddleware': 900,
 }
 
-# 7. 其他反爬配置
-DEPTH_LIMIT = 5  # 新增：限制爬取深度，避免爬取过深触发反爬
-DEPTH_PRIORITY = 1  # 新增：深度优先爬取，模拟用户浏览行为
-SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'  # 新增：FIFO队列，模拟用户访问顺序
+# 备用多维反爬配置
+DEPTH_LIMIT = 5  # 限制爬取深度，避免爬取过深触发反爬
+DEPTH_PRIORITY = 1  # 深度优先爬取，模拟用户浏览行为
+SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'  # FIFO队列，模拟用户访问顺序
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
-STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'  # 新增：内存统计，避免写入文件暴露
+STATS_CLASS = 'scrapy.statscollectors.MemoryStatsCollector'  # 内存统计，避免写入文件暴露
