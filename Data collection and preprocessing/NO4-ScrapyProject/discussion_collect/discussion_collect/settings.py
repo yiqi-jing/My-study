@@ -93,34 +93,61 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 
-# 禁用SSL警告（可选，可放在爬虫文件中）
+# 禁用SSL警告
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# 自定义配置
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' # 模拟常见浏览器的User-Agent
 DOWNLOAD_DELAY = 1.0  # 随机值可在爬虫中动态设置
-CONCURRENT_REQUESTS = 2
-CONCURRENT_REQUESTS_PER_DOMAIN = 2
-DOWNLOAD_TIMEOUT = 15
-LOG_LEVEL = 'INFO'
-TELNETCONSOLE_ENABLED = False
-ROBOTSTXT_OBEY = False
-SSL_VERIFY = False
-AUTOTHROTTLE_ENABLED = True
-AUTOTHROTTLE_START_DELAY = 1
-AUTOTHROTTLE_MAX_DELAY = 5
-COOKIES_ENABLED = True
-RETRY_TIMES = 3
-RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504]
+CONCURRENT_REQUESTS = 2 # 限制总并发请求数
+CONCURRENT_REQUESTS_PER_DOMAIN = 2 # 限制每个域名的并发请求数
+DOWNLOAD_TIMEOUT = 15 # 设置下载超时时间
+LOG_LEVEL = 'INFO' # 设置日志级别
+TELNETCONSOLE_ENABLED = False # 禁用Telnet控制台
+ROBOTSTXT_OBEY = False  # 不遵守robots.txt规则
+SSL_VERIFY = False # 禁用SSL证书验证
+AUTOTHROTTLE_ENABLED = True # 启用自动限速
+AUTOTHROTTLE_START_DELAY = 1 # 初始下载延迟
+AUTOTHROTTLE_MAX_DELAY = 5  # 最大下载延迟
+COOKIES_ENABLED = True # 启用Cookies
+RETRY_TIMES = 3 # 设置重试次数
+RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504] # 设置需要重试的HTTP状态码
 
-
-# settings.py
-CONCURRENT_REQUESTS = 12
-CONCURRENT_REQUESTS_PER_DOMAIN = 6
+CONCURRENT_REQUESTS = 12 # 增加总并发请求数
+CONCURRENT_REQUESTS_PER_DOMAIN = 6 # 增加每个域名的并发请求数
 DOWNLOAD_DELAY = 0.5  # 增加延迟避免反爬
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
-LOG_LEVEL = 'WARNING'
-DOWNLOAD_TIMEOUT = 20
-RETRY_TIMES = 2
-RETRY_HTTP_CODES = [408, 500, 502, 503, 504]
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' # 更新User-Agent
+LOG_LEVEL = 'WARNING' # 调整日志级别
+DOWNLOAD_TIMEOUT = 20 # 增加下载超时时间
+RETRY_TIMES = 2 # 减少重试次数
+RETRY_HTTP_CODES = [408, 500, 502, 503, 504] # 更新需要重试的HTTP状态码
+
+# 启用代理中间件
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
+    'discussion_collect.middlewares.ProxyMiddleware': 760,
+}
+
+# 代理列表
+PROXY_LIST = [
+    'http://123.456.789.000:8080',
+    'http://234.567.890.123:3128',
+    'http://345.678.901.234:80'
+]
+# 代理切换策略
+PROXY_MODE = 0  # 0: 随机选择代理，1: 顺序选择代理
+# 服务器肉鸡
+TARGET_SERVERS = [
+    'http://targetserver1.com',
+    'http://targetserver2.com'
+]
+#虚拟海外IP设置
+DOWNLOADER_MIDDLEWARES.update({
+    'discussion_collect.middlewares.OverseasIPMiddleware': 770,
+})
+
+# 海外IP服务配置
+OVERSEAS_IP_SERVICE_URL = 'http://overseasipservice.com/api/getip'
+
+# 海外IP更新频率（秒）
+OVERSEAS_IP_UPDATE_INTERVAL = 600

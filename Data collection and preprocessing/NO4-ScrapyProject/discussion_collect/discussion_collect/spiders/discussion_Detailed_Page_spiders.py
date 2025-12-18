@@ -35,13 +35,6 @@ class DiscussionDetailedPageSpider(Spider):
         self.pbar = None
         self.lock = threading.Lock()
         self.data_cache = []
-        
-        self.custom_settings = {
-            'LOG_LEVEL': 'INFO',
-            'DOWNLOAD_DELAY': 0.5,
-            'CONCURRENT_REQUESTS': 5,
-            'USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
 
     def start_requests(self):
         """从清洗后的CSV读取URL，统计总数并生成爬取请求"""
