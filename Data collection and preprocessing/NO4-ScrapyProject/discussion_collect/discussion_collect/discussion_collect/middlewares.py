@@ -7,6 +7,8 @@ from scrapy import signals
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
+import random
+import logging
 
 
 class DiscussionCollectSpiderMiddleware:
@@ -54,6 +56,43 @@ class DiscussionCollectSpiderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class RandomUserAgentMiddleware:
+    """随机选择 User-Agent。需要在 settings.py 中定义 USER_AGENT_LIST。"""
+    def __init__(self, user_agent_list):
+        self.user_agent_list = user_agent_list or []
+        self.logger = logging.getLogger(__name__)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings.getlist('USER_AGENT_LIST'))
+
+    def process_request(self, request, spider):
+        if self.user_agent_list:
+            ua = random.choice(self.user_agent_list)
+            request.headers.setdefault('User-Agent', ua)
+            return None
+
+
+class RandomProxyMiddleware:
+    """从 PROXY_LIST 中随机选择代理并注入到 request.meta['proxy']。
+    在 settings.py 中维护 PROXY_LIST；如果为空则不启用代理。
+    """
+    def __init__(self, proxy_list):
+        self.proxy_list = proxy_list or []
+        self.logger = logging.getLogger(__name__)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings.getlist('PROXY_LIST'))
+
+    def process_request(self, request, spider):
+        if not self.proxy_list:
+            return None
+        proxy = random.choice(self.proxy_list)
+        request.meta['proxy'] = proxy
+        return None
 
 
 class DiscussionCollectDownloaderMiddleware:

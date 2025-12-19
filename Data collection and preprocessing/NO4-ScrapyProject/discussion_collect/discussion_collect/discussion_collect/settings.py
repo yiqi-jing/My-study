@@ -98,29 +98,68 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # 自定义配置
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-DOWNLOAD_DELAY = 1.0  # 随机值可在爬虫中动态设置
-CONCURRENT_REQUESTS = 2
-CONCURRENT_REQUESTS_PER_DOMAIN = 2
-DOWNLOAD_TIMEOUT = 15
+# ---- 反爬优化配置（合并与增强） ----
+# 是否遵循 robots.txt（爬取测试时可关闭，生产请遵守目标站点政策）
+ROBOTSTXT_OBEY = False
+
+# 并发与延迟
+CONCURRENT_REQUESTS = 8
+CONCURRENT_REQUESTS_PER_DOMAIN = 4
+DOWNLOAD_DELAY = 1.0
+RANDOMIZE_DOWNLOAD_DELAY = True
+DOWNLOAD_TIMEOUT = 20
+
+# Cookie 与日志
+COOKIES_ENABLED = False
 LOG_LEVEL = 'INFO'
 TELNETCONSOLE_ENABLED = False
-ROBOTSTXT_OBEY = False
-SSL_VERIFY = False
+
+# 自动节流（AutoThrottle）
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1
-AUTOTHROTTLE_MAX_DELAY = 5
-COOKIES_ENABLED = True
-RETRY_TIMES = 3
-RETRY_HTTP_CODES = [403, 429, 500, 502, 503, 504]
+AUTOTHROTTLE_MAX_DELAY = 10
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_DEBUG = False
 
+# 重试设置（处理 429 等错误）
+RETRY_ENABLED = True
+RETRY_TIMES = 5
+# 包含 429（Too Many Requests）以便重试
+RETRY_HTTP_CODES = [408, 429, 500, 502, 503, 504]
 
-# settings.py
-CONCURRENT_REQUESTS = 12
-CONCURRENT_REQUESTS_PER_DOMAIN = 6
-DOWNLOAD_DELAY = 0.5  # 增加延迟避免反爬
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
-LOG_LEVEL = 'WARNING'
-DOWNLOAD_TIMEOUT = 20
-RETRY_TIMES = 2
-RETRY_HTTP_CODES = [408, 500, 502, 503, 504]
+# 请求头与编码
+DEFAULT_REQUEST_HEADERS = {
+	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+	'Accept-Language': 'zh-CN,zh;q=0.9',
+}
+
+# 用户代理池（可扩展）
+USER_AGENT_LIST = [
+	'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+	'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:119.0) Gecko/20100101 Firefox/119.0',
+	'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
+	'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+	'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+]
+
+# 代理池（示例）：可以在运行时从文件/服务加载或使用动态代理池
+PROXY_LIST = [
+	# 'http://username:password@proxy.example:8080',
+	# 'http://proxy2.example:3128',
+]
+
+# 启用自定义下载中间件（随机 UA、代理）以及内置的重试与代理中间件
+DOWNLOADER_MIDDLEWARES = {
+	# 自定义随机 UA 中间件（实现见 middlewares.py）
+	'discussion_collect.middlewares.RandomUserAgentMiddleware': 400,
+	# 内置重试中间件（确保在 UA 之后运行）
+	'scrapy.downloadermiddlewares.retry.RetryMiddleware': 500,
+	# 内置 HTTP 代理中间件
+	'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
+	# 自定义代理中间件（如果 PROXY_LIST 非空）
+	'discussion_collect.middlewares.RandomProxyMiddleware': 740,
+}
+
+# 其他建议
+# 如果需要绕过 JS 渲染强的页面，可以考虑整合 Selenium 或 Playwright
+# ---- 结束配置 ----
