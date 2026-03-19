@@ -17,13 +17,24 @@ grades = data.frame(
 
 print(grades)
 
-# 在数据框中新增total_score，计算每个学生的总分（使用 dplyr，正确地给整个数据框赋值）
+# 1.在数据框中新增total_score，计算每个学生的总分（使用 dplyr，正确地给整个数据框赋值）
 grades = grades %>% mutate(total_score = math + english + science)
 print(grades)
 
-# # 筛选出数学成绩 ≥ 90 或总分 ≥ 260 ，输出姓名和数学成绩和总分
+# # 2.筛选出数学成绩 ≥ 90 或总分 ≥ 260 ，输出姓名和数学成绩和总分
 # filtered_grades = grades[grades$math >= 90 | grades$total_score >= 260, c('name', 'math', 'total_score')]
 # print(filtered_grades)
-# # 按总分的高低对数据框进行排序，并保留前3名学生的所有消息
+
+select_data = grades %>% filter(math >=90 | total_score >= 260) %>% select(name, math, total_score)
+print(select_data)
+select_data = grades %>% filter(math >=90 & total_score >= 260) %>% select(name, math, total_score)
+print(select_data)
+select_data = grades %>% filter(math >=90 , total_score >= 260) %>% select(name, math, total_score)
+print(select_data)
+
+# # 3.按总分的高低对数据框进行排序，并保留前3名学生的所有消息
 # top_students = grades[order(-grades$total_score), ][1:3, ]
 # print(top_students)
+
+top3 = grades %>% arrange(desc(total_score)) %>% head(3)
+print(top3)
