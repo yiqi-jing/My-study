@@ -18,7 +18,7 @@ grades = data.frame(
 print(grades)
 
 # 在数据框中新增total_score，计算每个学生的总分（使用 dplyr，正确地给整个数据框赋值）
-grades = grades$total_score = grades %>% mutate(total_score = math + english + science)
+grades = grades %>% mutate(total_score = math + english + science)
 print(grades)
 
 # # 筛选出数学成绩 ≥ 90 或总分 ≥ 260 ，输出姓名和数学成绩和总分
