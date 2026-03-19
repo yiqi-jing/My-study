@@ -1,6 +1,12 @@
 # 创建一个数据框grades，包含'student_id','name','math','english','science'五列，
 # 分别表示学生ID、姓名、数学成绩、英语成绩和科学成绩
 
+# 安装依赖包（仅在未安装时）
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+
+# 加载dplyr包
+library(dplyr)
+
 grades = data.frame(
     student_id = c(1,2,3,4,5),
     name       = c('A1','B1','C1','D1','E1'),
@@ -11,13 +17,13 @@ grades = data.frame(
 
 print(grades)
 
-# 在数据框中新增total_score，计算每个学生的总分
-grades$total_score = grades$math + grades$english + grades$science
+# 在数据框中新增total_score，计算每个学生的总分（使用 dplyr，正确地给整个数据框赋值）
+grades = grades$total_score = grades %>% mutate(total_score = math + english + science)
 print(grades)
 
-# 筛选出数学成绩 ≥ 90 或总分 ≥ 260 ，输出姓名和数学成绩和总分
-filtered_grades = grades[grades$math >= 90 | grades$total_score >= 260, c('name', 'math', 'total_score')]
-print(filtered_grades)
-# 按总分的高低对数据框进行排序，并保留前3名学生的所有消息
-top_students = grades[order(-grades$total_score), ][1:3, ]
-print(top_students)
+# # 筛选出数学成绩 ≥ 90 或总分 ≥ 260 ，输出姓名和数学成绩和总分
+# filtered_grades = grades[grades$math >= 90 | grades$total_score >= 260, c('name', 'math', 'total_score')]
+# print(filtered_grades)
+# # 按总分的高低对数据框进行排序，并保留前3名学生的所有消息
+# top_students = grades[order(-grades$total_score), ][1:3, ]
+# print(top_students)
