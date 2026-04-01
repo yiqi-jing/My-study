@@ -15,6 +15,7 @@ Sheet2：记录 2025 年销售数据，列：date, product, quantity
 # install.packages('readxl')
 # install.packages('writexl')
 # install.packages('dplyr')
+# install.packages('purrr')
 
 library(readxl,dplyr)
 library(writexl)
