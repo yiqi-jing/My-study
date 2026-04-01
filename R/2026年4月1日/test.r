@@ -44,6 +44,3 @@ print(product_summary)
 
 #（4）将汇总结果写入 Excel 文件 product_summary.xlsx（使用 writexl::write_xlsx(写入的数据，写入的文件名)）。
 writexl::write_xlsx(product_summary, 'R\\2026年4月1日\\product_summary.xlsx')
-
-
-
