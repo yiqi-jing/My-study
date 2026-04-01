@@ -1,0 +1,12 @@
+{
+  "name": "cryptoframework-demo",
+  "version": "1.0.0",
+  "description": "加密解密示例程序",
+  "main": "crypto_demo.js",
+  "scripts": {
+    "test": "node crypto_demo.js"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
