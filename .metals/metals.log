@@ -58,3 +58,66 @@ F:\My-study\cryptoframework-demo\java\CryptoDemo.java:389: 错误: 编码 GBK 的不可
 信息: Unsupported notification method: $/setTrace
 4月 01, 2026 8:59:21 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 信息: Unsupported notification method: $/setTrace
+4月 01, 2026 9:02:56 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.01 21:04:08 INFO  Started: Metals version 1.6.6+33-b90af21f-SNAPSHOT in folders 'F:\My-study' for client Visual Studio Code - Insiders 1.115.0-insider.
+2026.04.01 21:04:08 INFO  Memory monitor started
+2026.04.01 21:04:09 WARN  no build tool detected in workspace 'F:\My-study'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2026.04.01 21:04:10 WARN  Build server is not auto-connectable.
+4月 01, 2026 9:07:56 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.01 21:24:48 INFO  Shutting down server
+2026.04.01 21:24:48 INFO  Memory monitor stopped
+2026.04.01 21:24:48 INFO  shutting down Metals
+2026.04.01 21:24:48 INFO  Exiting server
+4月 01, 2026 9:27:56 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 01, 2026 9:32:56 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.01 21:34:48 INFO  Shutting down server
+2026.04.01 21:34:48 INFO  shutting down Metals
+2026.04.01 21:34:48 INFO  Exiting server
+2026.04.03 10:51:21 INFO  Started: Metals version 1.6.0+71-cfca1ac3-SNAPSHOT in folders 'F:\My-study' for client Trae CN 1.107.1.
+2026.04.03 10:51:22 WARN  Schema "PUBLIC" has a version (7) that is newer than the latest available migration (6) !
+2026.04.03 10:51:22 WARN  no build tool detected in workspace 'F:\My-study'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2026.04.03 10:51:22 WARN  Build server is not auto-connectable.
+2026.04.03 10:51:22 WARN  no build target for: F:\My-study\cryptoframework-demo\java\CryptoDemo.java
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:10: 错误: 编码 GBK 的不可映射字符 (0x95)
+ * 鏀寔: AES銆丷SA銆丼HA銆丠MAC銆丏ES 绛夌畻娉?
+                                 ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:130: 错误: 编码 GBK 的不可映射字符 (0x85)
+        // 鉁? 淇锛欽DK17 鍏煎 RSA-PSS 绛惧悕
+            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:139: 错误: 编码 GBK 的不可映射字符 (0x85)
+        // 鉁? 淇锛欽DK17 鍏煎 RSA-PSS 楠岀
+            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:335: 错误: 编码 GBK 的不可映射字符 (0xBA)
+        System.out.println("HMAC 娑堟伅璁よ瘉鐮佹紨绀?");
+                                           ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:358: 错误: 编码 GBK 的不可映射字符 (0x80)
+        System.out.println("鐩愬?? (hex): " + bytesToHex(result.salt));
+                              ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:358: 错误: 编码 GBK 的不可映射字符 (0xBC)
+        System.out.println("鐩愬?? (hex): " + bytesToHex(result.salt));
+                               ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:393: 错误: 编码 GBK 的不可映射字符 (0x80)
+            System.out.println("鎵?鏈夋紨绀哄畬鎴?!");
+                                 ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:393: 错误: 编码 GBK 的不可映射字符 (0x90)
+            System.out.println("鎵?鏈夋紨绀哄畬鎴?!");
+                                         ^
+4月 03, 2026 10:55:07 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 03, 2026 11:00:08 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 03, 2026 11:05:07 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 03, 2026 11:10:07 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 03, 2026 11:15:07 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 03, 2026 11:15:23 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.03 11:15:25 INFO  Shutting down server
+2026.04.03 11:15:25 INFO  shutting down Metals
+2026.04.03 11:15:25 INFO  Exiting server
