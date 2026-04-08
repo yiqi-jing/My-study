@@ -256,6 +256,53 @@ public class CryptoDemo {
         }
     }
 
+    public static class SM9Crypto {
+        
+        public static byte[] generateMasterKey() throws Exception {
+            // 注意：Java 标准库不直接支持 SM9 算法
+            // 需要使用 Bouncy Castle 等第三方库
+            // 这里返回一个模拟的主密钥
+            byte[] masterKey = new byte[32];
+            new SecureRandom().nextBytes(masterKey);
+            return masterKey;
+        }
+
+        public static byte[] encrypt(byte[] plaintext, byte[] masterKey, String id) throws Exception {
+            // 注意：Java 标准库不直接支持 SM9 算法
+            // 需要使用 Bouncy Castle 等第三方库
+            // 这里返回一个模拟的加密结果
+            byte[] ciphertext = new byte[plaintext.length + 16];
+            System.arraycopy(plaintext, 0, ciphertext, 0, plaintext.length);
+            new SecureRandom().nextBytes(ciphertext, plaintext.length, 16);
+            return ciphertext;
+        }
+
+        public static byte[] decrypt(byte[] ciphertext, byte[] masterKey, String id) throws Exception {
+            // 注意：Java 标准库不直接支持 SM9 算法
+            // 需要使用 Bouncy Castle 等第三方库
+            // 这里返回一个模拟的解密结果
+            byte[] plaintext = new byte[ciphertext.length - 16];
+            System.arraycopy(ciphertext, 0, plaintext, 0, plaintext.length);
+            return plaintext;
+        }
+
+        public static byte[] sign(byte[] message, byte[] masterKey, String id) throws Exception {
+            // 注意：Java 标准库不直接支持 SM9 算法
+            // 需要使用 Bouncy Castle 等第三方库
+            // 这里返回一个模拟的签名
+            byte[] signature = new byte[64];
+            new SecureRandom().nextBytes(signature);
+            return signature;
+        }
+
+        public static boolean verify(byte[] message, byte[] signature, byte[] masterKey, String id) throws Exception {
+            // 注意：Java 标准库不直接支持 SM9 算法
+            // 需要使用 Bouncy Castle 等第三方库
+            // 这里返回一个模拟的验签结果
+            return true;
+        }
+    }
+
     private static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
@@ -380,6 +427,37 @@ public class CryptoDemo {
         System.out.println("验签结果: " + (isValid ? "成功" : "失败"));
     }
 
+    public static void demoSM9() throws Exception {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("SM9 国密算法演示");
+        System.out.println("=".repeat(50));
+
+        byte[] masterKey = SM9Crypto.generateMasterKey();
+        byte[] plaintext = "Hello, SM9!".getBytes();
+        String id = "user@example.com";
+
+        System.out.println("原始数据: " + new String(plaintext));
+        System.out.println("用户标识: " + id);
+
+        // 加密解密
+        byte[] ciphertext = SM9Crypto.encrypt(plaintext, masterKey, id);
+        System.out.println("SM9 加密结果 (hex): " + bytesToHex(ciphertext));
+
+        byte[] decrypted = SM9Crypto.decrypt(ciphertext, masterKey, id);
+        System.out.println("SM9 解密结果: " + new String(decrypted));
+
+        // 签名验签
+        System.out.println("\n--- SM9 签名验签 ---");
+        byte[] message = "Message to sign with SM9".getBytes();
+        byte[] signature = SM9Crypto.sign(message, masterKey, id);
+        System.out.println("签名 (hex): " + bytesToHex(signature));
+
+        boolean isValid = SM9Crypto.verify(message, signature, masterKey, id);
+        System.out.println("验签结果: " + (isValid ? "成功" : "失败"));
+        System.out.println("注意: 由于 Java 标准库不直接支持 SM9 算法，这里使用的是模拟实现。");
+        System.out.println("要使用真实的 SM9 算法，需要添加 Bouncy Castle 等第三方库。");
+    }
+
     public static void main(String[] args) {
         try {
             demoAES();
@@ -388,6 +466,7 @@ public class CryptoDemo {
             demoHMAC();
             demoPBKDF2();
             demoEC();
+            demoSM9();
 
             System.out.println("\n" + "=".repeat(50));
             System.out.println("所有演示完成!");

@@ -65,7 +65,7 @@ hist(data,
     )
 
 # 7.绘制函数曲线，使用curve()
-curve(sin(x), from = -100, to = 100)
+# curve(sin(x), from = -100, to = 100)
 
 
 # 外部

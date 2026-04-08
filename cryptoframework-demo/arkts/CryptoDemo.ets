@@ -332,6 +332,70 @@ class SM2Crypto {
   }
 }
 
+class SM9Crypto {
+  static async generateMasterKey(): Promise<cryptoFramework.SymKey> {
+    const symKeyGenerator = cryptoFramework.createSymKeyGenerator('SM9_256');
+    return await symKeyGenerator.generateSymKey();
+  }
+
+  static async encrypt(
+    plaintext: Uint8Array,
+    masterKey: cryptoFramework.SymKey,
+    id: string
+  ): Promise<Uint8Array> {
+    const cipher = cryptoFramework.createCipher('SM9_256|SM9');
+    await cipher.init(cryptoFramework.CryptoMode.ENCRYPT_MODE, masterKey, {
+      algName: 'SM9ParamsSpec',
+      id: id
+    });
+    const result = await cipher.doFinal({ data: plaintext });
+    return result.data;
+  }
+
+  static async decrypt(
+    ciphertext: Uint8Array,
+    masterKey: cryptoFramework.SymKey,
+    id: string
+  ): Promise<Uint8Array> {
+    const cipher = cryptoFramework.createCipher('SM9_256|SM9');
+    await cipher.init(cryptoFramework.CryptoMode.DECRYPT_MODE, masterKey, {
+      algName: 'SM9ParamsSpec',
+      id: id
+    });
+    const result = await cipher.doFinal({ data: ciphertext });
+    return result.data;
+  }
+
+  static async sign(
+    message: Uint8Array,
+    masterKey: cryptoFramework.SymKey,
+    id: string
+  ): Promise<Uint8Array> {
+    const signer = cryptoFramework.createSign('SM9_256|SM3');
+    await signer.init(masterKey, {
+      algName: 'SM9ParamsSpec',
+      id: id
+    });
+    await signer.update({ data: message });
+    return (await signer.sign(null)).data;
+  }
+
+  static async verify(
+    message: Uint8Array,
+    signature: Uint8Array,
+    masterKey: cryptoFramework.SymKey,
+    id: string
+  ): Promise<boolean> {
+    const verifier = cryptoFramework.createVerify('SM9_256|SM3');
+    await verifier.init(masterKey, {
+      algName: 'SM9ParamsSpec',
+      id: id
+    });
+    await verifier.update({ data: message });
+    return await verifier.verify(null, { data: signature });
+  }
+}
+
 class PBKDF2Crypto {
   static async deriveKey(
     password: string,
@@ -510,6 +574,35 @@ async function demoSM2(): Promise<void> {
   console.log('验签结果:', isValid ? '成功' : '失败');
 }
 
+async function demoSM9(): Promise<void> {
+  console.log('\n' + '='.repeat(50));
+  console.log('SM9 国密算法演示');
+  console.log('='.repeat(50));
+
+  const masterKey = await SM9Crypto.generateMasterKey();
+  const plaintext = stringToUint8Array('Hello, SM9!');
+  const id = 'user@example.com';
+
+  console.log('原始数据:', uint8ArrayToString(plaintext));
+  console.log('用户标识:', id);
+
+  // 加密解密
+  const ciphertext = await SM9Crypto.encrypt(plaintext, masterKey, id);
+  console.log('SM9 加密结果 (hex):', uint8ArrayToHex(ciphertext));
+
+  const decrypted = await SM9Crypto.decrypt(ciphertext, masterKey, id);
+  console.log('SM9 解密结果:', uint8ArrayToString(decrypted));
+
+  // 签名验签
+  console.log('\n--- SM9 签名验签 ---');
+  const message = stringToUint8Array('Message to sign with SM9');
+  const signature = await SM9Crypto.sign(message, masterKey, id);
+  console.log('签名 (hex):', uint8ArrayToHex(signature));
+
+  const isValid = await SM9Crypto.verify(message, signature, masterKey, id);
+  console.log('验签结果:', isValid ? '成功' : '失败');
+}
+
 async function demoPBKDF2(): Promise<void> {
   console.log('\n' + '='.repeat(50));
   console.log('PBKDF2 密钥派生演示');
@@ -536,6 +629,7 @@ struct CryptoDemoPage {
       await demoHMAC();
       await demoSM4();
       await demoSM2();
+      await demoSM9();
       await demoPBKDF2();
 
       console.log('\n' + '='.repeat(50));
@@ -590,6 +684,14 @@ struct CryptoDemoPage {
         .margin({ top: 10 })
         .onClick(async () => {
           await demoSM4();
+        })
+
+      Button('SM9 国密')
+        .width('80%')
+        .height(50)
+        .margin({ top: 10 })
+        .onClick(async () => {
+          await demoSM9();
         })
     }
     .width('100%')

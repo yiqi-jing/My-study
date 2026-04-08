@@ -121,3 +121,117 @@ F:\My-study\cryptoframework-demo\java\CryptoDemo.java:393: ´íÎó: ±àÂë GBK µÄ²»¿É
 2026.04.03 11:15:25 INFO  Shutting down server
 2026.04.03 11:15:25 INFO  shutting down Metals
 2026.04.03 11:15:25 INFO  Exiting server
+2026.04.07 18:47:46 INFO  Started: Metals version 1.6.6 in folders 'F:\My-study' for client Trae CN 1.107.1.
+2026.04.07 18:47:46 INFO  Memory monitor started
+2026.04.07 18:47:50 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.04.07 18:47:52 WARN  no build tool detected in workspace 'F:\My-study'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2026.04.07 18:47:52 WARN  Build server is not auto-connectable.
+2026.04.07 18:47:52 WARN  no build target for: F:\My-study\cryptoframework-demo\java\CryptoDemo.java
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:10: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x95)
+ * æ”¯æŒ: AESã€RSAã€SHAã€HMACã€DES ç­‰ç®—æ³?
+                                 ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:130: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x85)
+        // âœ? ä¿®å¤ï¼šJDK17 å…¼å®¹ RSA-PSS ç­¾å
+            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:139: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x85)
+        // âœ? ä¿®å¤ï¼šJDK17 å…¼å®¹ RSA-PSS éªŒç­¾
+            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:263: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:263: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA8)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                     ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:263: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x93)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:264: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„ä¸»å¯†é’?
+                      ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:264: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA5)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„ä¸»å¯†é’?
+                                 ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:272: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:272: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA8)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                     ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:272: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x93)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:273: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„åŠ å¯†ç»“æœ
+                      ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:282: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:282: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA8)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                     ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:282: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x93)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:283: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„è§£å¯†ç»“æœ
+                      ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:291: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:291: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA8)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                     ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:291: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x93)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:292: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„ç­¾å
+                      ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:300: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:300: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA8)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                     ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:300: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x93)
+            // éœ?è¦ä½¿ç”? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº?
+                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:301: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            // è¿™é‡Œè¿”å›ä¸?ä¸ªæ¨¡æ‹Ÿçš„éªŒç­¾ç»“æœ
+                      ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:382: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xBA)
+        System.out.println("HMAC æ¶ˆæ¯è®¤è¯ç æ¼”ç¤?");
+                                           ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:405: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+        System.out.println("ç›å?? (hex): " + bytesToHex(result.salt));
+                              ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:405: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xBC)
+        System.out.println("ç›å?? (hex): " + bytesToHex(result.salt));
+                               ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:457: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+        System.out.println("æ³¨æ„: ç”±äº Java æ ‡å‡†åº“ä¸ç›´æ¥æ”¯æŒ SM9 ç®—æ³•ï¼Œè¿™é‡Œä½¿ç”¨çš„æ˜¯æ¨¡æ‹Ÿå®ç°ã??");
+                                                                               ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:457: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x82)
+        System.out.println("æ³¨æ„: ç”±äº Java æ ‡å‡†åº“ä¸ç›´æ¥æ”¯æŒ SM9 ç®—æ³•ï¼Œè¿™é‡Œä½¿ç”¨çš„æ˜¯æ¨¡æ‹Ÿå®ç°ã??");
+                                                                                ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:458: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0xA0)
+        System.out.println("è¦ä½¿ç”¨çœŸå®çš„ SM9 ç®—æ³•ï¼Œéœ€è¦æ·»åŠ? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº“ã??");
+                                                    ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:458: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+        System.out.println("è¦ä½¿ç”¨çœŸå®çš„ SM9 ç®—æ³•ï¼Œéœ€è¦æ·»åŠ? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº“ã??");
+                                                                            ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:458: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x82)
+        System.out.println("è¦ä½¿ç”¨çœŸå®çš„ SM9 ç®—æ³•ï¼Œéœ€è¦æ·»åŠ? Bouncy Castle ç­‰ç¬¬ä¸‰æ–¹åº“ã??");
+                                                                             ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:472: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x80)
+            System.out.println("æ‰?æœ‰æ¼”ç¤ºå®Œæˆ?!");
+                                 ^
+F:\My-study\cryptoframework-demo\java\CryptoDemo.java:472: ´íÎó: ±àÂë GBK µÄ²»¿ÉÓ³Éä×Ö·û (0x90)
+            System.out.println("æ‰?æœ‰æ¼”ç¤ºå®Œæˆ?!");
+                                         ^
+4ÔÂ 07, 2026 6:49:59 ÏÂÎç org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+ĞÅÏ¢: Unsupported notification method: $/setTrace
+2026.04.07 18:51:29 INFO  Shutting down server
+2026.04.07 18:51:29 INFO  Memory monitor stopped
+2026.04.07 18:51:29 INFO  shutting down Metals
+2026.04.07 18:51:29 INFO  Exiting server

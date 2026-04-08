@@ -9,7 +9,8 @@
 ```
 cryptoframework-demo/
 ├── python/
-│   └── crypto_demo.py      # Python 加密解密示例
+│   ├── crypto_demo.py      # Python 加密解密示例
+│   └── sm9.py              # SM9 算法实现
 ├── javascript/
 │   ├── package.json
 │   └── crypto_demo.js      # Node.js 加密解密示例
@@ -29,6 +30,7 @@ cryptoframework-demo/
 ### 非对称加密
 - **RSA**: 加密解密、签名验签
 - **SM2**: 国密非对称加密算法
+- **SM9**: 国密标识密码算法
 - **EC**: 椭圆曲线加密
 
 ### 消息摘要
@@ -85,9 +87,9 @@ java CryptoDemo
 ## 算法对比
 
 | 算法类型 | 国际标准 | 国密标准 |
-|---------|---------|---------|
+|---------|---------|--------|
 | 对称加密 | AES | SM4 |
-| 非对称加密 | RSA、EC | SM2 |
+| 非对称加密 | RSA、EC | SM2、SM9 |
 | 摘要算法 | SHA-256 | SM3 |
 
 ## 注意事项

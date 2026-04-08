@@ -223,6 +223,61 @@ class ECCrypto {
     }
 }
 
+class SM9Crypto {
+    static generateKeyPair() {
+        try {
+            const gm = require('gm-crypto');
+            const masterKey = gm.sm9.generateMasterKey();
+            return masterKey;
+        } catch (error) {
+            throw new Error('需要安装 gm-crypto: npm install gm-crypto');
+        }
+    }
+
+    static encrypt(plaintext, masterKey, id) {
+        try {
+            const gm = require('gm-crypto');
+            const pubKey = gm.sm9.extractPublicKey(masterKey, 'sign', id);
+            const ciphertext = gm.sm9.encrypt(pubKey, plaintext);
+            return ciphertext;
+        } catch (error) {
+            throw new Error('需要安装 gm-crypto: npm install gm-crypto');
+        }
+    }
+
+    static decrypt(ciphertext, masterKey, id) {
+        try {
+            const gm = require('gm-crypto');
+            const priKey = gm.sm9.extractPrivateKey(masterKey, 'sign', id);
+            const plaintext = gm.sm9.decrypt(priKey, ciphertext);
+            return plaintext;
+        } catch (error) {
+            throw new Error('需要安装 gm-crypto: npm install gm-crypto');
+        }
+    }
+
+    static sign(message, masterKey, id) {
+        try {
+            const gm = require('gm-crypto');
+            const priKey = gm.sm9.extractPrivateKey(masterKey, 'sign', id);
+            const signature = gm.sm9.sign(priKey, message);
+            return signature;
+        } catch (error) {
+            throw new Error('需要安装 gm-crypto: npm install gm-crypto');
+        }
+    }
+
+    static verify(message, signature, masterKey, id) {
+        try {
+            const gm = require('gm-crypto');
+            const pubKey = gm.sm9.extractPublicKey(masterKey, 'sign', id);
+            return gm.sm9.verify(pubKey, message, signature);
+        } catch (error) {
+            throw new Error('需要安装 gm-crypto: npm install gm-crypto');
+        }
+    }
+}
+
 function demoAES() {
     console.log('='.repeat(50));
     console.log('AES 加密解密演示');
@@ -338,6 +393,39 @@ function demoEC() {
     console.log('验签结果:', isValid ? '成功' : '失败');
 }
 
+function demoSM9() {
+    console.log('\n' + '='.repeat(50));
+    console.log('SM9 国密算法演示');
+    console.log('='.repeat(50));
+
+    try {
+        const masterKey = SM9Crypto.generateKeyPair();
+        const plaintext = Buffer.from('Hello, SM9!', 'utf8');
+        const id = 'user@example.com';
+
+        console.log('原始数据:', plaintext.toString());
+        console.log('用户标识:', id);
+
+        // 加密解密
+        const ciphertext = SM9Crypto.encrypt(plaintext, masterKey, id);
+        console.log('SM9 加密结果 (hex):', ciphertext.toString('hex'));
+
+        const decrypted = SM9Crypto.decrypt(ciphertext, masterKey, id);
+        console.log('SM9 解密结果:', decrypted.toString());
+
+        // 签名验签
+        console.log('\n--- SM9 签名验签 ---');
+        const message = Buffer.from('Message to sign with SM9', 'utf8');
+        const signature = SM9Crypto.sign(message, masterKey, id);
+        console.log('签名 (hex):', signature.toString('hex'));
+
+        const isValid = SM9Crypto.verify(message, signature, masterKey, id);
+        console.log('验签结果:', isValid ? '成功' : '失败');
+    } catch (error) {
+        console.log('错误:', error.message);
+    }
+}
+
 function main() {
     demoAES();
     demoRSA();
@@ -345,6 +433,7 @@ function main() {
     demoHMAC();
     demoPBKDF2();
     demoEC();
+    demoSM9();
 
     console.log('\n' + '='.repeat(50));
     console.log('所有演示完成!');
