@@ -843,3 +843,8 @@ F:\My-study\cryptoframework-demo\java\CryptoDemo.java:472: 错误: 编码 GBK 的不可
 信息: Unsupported notification method: $/setTrace
 4月 13, 2026 11:45:47 上午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 信息: Unsupported notification method: $/setTrace
+2026.04.13 11:46:16 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
+2026.04.13 11:46:17 WARN  no build target for: F:\My-study\cryptoframework-demo\java\CryptoDemo.java
+2026.04.13 11:46:18 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
+2026.04.13 11:46:18 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
+2026.04.13 11:46:19 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
