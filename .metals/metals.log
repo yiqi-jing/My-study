@@ -1164,3 +1164,52 @@ F:\My-study\cryptoframework-demo\java\CryptoDemo.java:472: 错误: 编码 GBK 的不可
 2026.04.13 21:01:27 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
 2026.04.13 21:01:27 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
 2026.04.13 21:01:27 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
+4月 13, 2026 9:04:30 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.13 21:04:30 INFO  no build target found for F:\My-study\cryptoframework-demo\java\CryptoDemo.java. Using fallback presentation compiler.
+2026.04.13 21:06:57 INFO  Shutting down server
+2026.04.13 21:06:57 INFO  Memory monitor stopped
+2026.04.13 21:06:57 INFO  shutting down Metals
+2026.04.13 21:06:57 INFO  Exiting server
+2026.04.14 16:26:51 INFO  Started: Metals version 1.6.7 in folders 'F:\My-HarmonyOS\HarmonyOS-APP\qinxu, F:\My-study' for client Trae CN 1.107.1.
+2026.04.14 16:26:51 INFO  Memory monitor started
+2026.04.14 16:26:52 INFO  Database: jdbc:h2:file:F:\My-HarmonyOS\HarmonyOS-APP\qinxu\.metals\metals (H2 2.4)
+2026.04.14 16:26:52 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.04.14 16:26:52 INFO  Successfully validated 7 migrations (execution time 00:00.064s)
+2026.04.14 16:26:52 INFO  Current version of schema "PUBLIC": 7
+2026.04.14 16:26:52 INFO  Schema "PUBLIC" is up to date. No migration necessary.
+2026.04.14 16:26:53 INFO  Database: jdbc:h2:file:F:\My-study\.metals\metals (H2 2.4)
+2026.04.14 16:26:53 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.04.14 16:26:53 INFO  Successfully validated 7 migrations (execution time 00:00.005s)
+2026.04.14 16:26:53 INFO  Current version of schema "PUBLIC": 7
+2026.04.14 16:26:53 INFO  Schema "PUBLIC" is up to date. No migration necessary.
+2026.04.14 16:26:53 WARN  no build tool detected in workspace 'F:\My-HarmonyOS\HarmonyOS-APP\qinxu'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2026.04.14 16:26:53 WARN  no build tool detected in workspace 'F:\My-study'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2026.04.14 16:26:54 WARN  Build server is not auto-connectable.
+2026.04.14 16:26:54 WARN  Build server is not auto-connectable.
+4月 14, 2026 4:29:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:34:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:39:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:44:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:49:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:54:11 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 4:59:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 5:04:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 5:09:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 5:14:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+4月 14, 2026 5:19:10 下午 org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+信息: Unsupported notification method: $/setTrace
+2026.04.14 17:32:59 INFO  Shutting down server
+2026.04.14 17:32:59 INFO  Memory monitor stopped
+2026.04.14 17:32:59 INFO  shutting down Metals
+2026.04.14 17:32:59 INFO  Exiting server
