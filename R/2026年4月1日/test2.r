@@ -33,7 +33,7 @@ setwd("f:\\My-study\\R\\2026年4月1日")
 # ======================
 # 1. 获取 logs 文件夹下所有 .log 文件
 # ======================
-file_paths <- list.files(path = "logs", pattern = "\\.log$", full.names = TRUE)
+file_paths = list.files(path = "logs", pattern = "\\.log$", full.names = TRUE)
 
 # 检查是否找到文件
 if (length(file_paths) == 0) {
@@ -47,7 +47,7 @@ print(file_paths)
 # 2. 读取所有文件（GB18030 编码）
 # 3. 合并成一个数据框
 # ======================
-all_logs <- map_dfr(
+all_logs = map_dfr(
   file_paths,
   ~read_csv(.x, locale = locale(encoding = "GB18030"), show_col_types = FALSE)
 )
@@ -62,7 +62,7 @@ if (!"action" %in% colnames(all_logs)) {
   stop("❌ 数据里没有 action 这一列！请检查日志文件内容！")
 }
 
-action_summary <- all_logs %>%
+action_summary = all_logs %>%
   group_by(action) %>%
   summarise(count = n(), .groups = "drop")
 
