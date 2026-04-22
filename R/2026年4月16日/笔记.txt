@@ -11,4 +11,10 @@
 3.泊松回归
 (1) glm(family = poisson)
 (2) 便宜量(offset) 处理不同暴露时间
-(3) 过离散检验(dispersiontest )
+(3) 过离散检验(dispersiontest from AER)
+
+4.混合效应模型
+(1) 固定效应与随机效应的比较
+    使用lme4包中的:lmer()和glmer()方法
+    随机矩阵、随机斜率模型
+    模型的比较使用: anova和
