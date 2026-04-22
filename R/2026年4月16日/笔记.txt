@@ -1,7 +1,14 @@
 1.线性回归
-（1） lm(): 简单或多元线性回归
-（2） plot():回归诊断图
-（3）step:设置逐步回归
+(1) lm(): 简单或多元线性回归
+(2) plot():回归诊断图
+(3) step:设置逐步回归
 
 2.逻辑回归
-（1）glm(family = binomial):广义线性模型
+(1) glm(family = binomial):广义线性模型
+(2) 预测概率与分类阈值
+(3) 混淆矩阵、POC曲线、AUC
+
+3.泊松回归
+(1) glm(family = poisson)
+(2) 便宜量(offset) 处理不同暴露时间
+(3) 过离散检验(dispersiontest )

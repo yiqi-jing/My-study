@@ -49,8 +49,6 @@ def build_cnn_model():
     # 全连接层
     model.add(layers.Dense(64, activation='relu'))
     model.add(layers.Dense(10, activation='softmax'))
-))
-    
     return model
 
 # 3. 训练模型
