@@ -30,8 +30,4 @@ print(select_data)
 
 
 # 3.按总分的高低对数据框进行排序，并保留前3名学生的所有消息
-# top_students = grades[order(-grades$total_score), ][1:3, ]
-# print(top_students)
-
 top3 = grades %>% arrange(desc(total_score)) %>% head(3)
-print(top3)

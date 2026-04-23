@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import layers, models
-from tensorflow.keras.datasets import mnist
+from keras import layers, models
+from keras.datasets import mnist
 import matplotlib.pyplot as plt
 
 # 设置中文字体
@@ -130,5 +130,5 @@ def main():
     model.save(model_path)
     print(f"模型已保存为 {model_path}")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
