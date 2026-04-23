@@ -121,6 +121,23 @@ def main():
     # ======================
     y_pred = predict_with_npu(model, x)
     
+    # 保存模型
+    print("\n保存模型...")
+    import os
+    model_dir = 'f:\\My-study\\Model'
+    os.makedirs(model_dir, exist_ok=True)
+    
+    # 保存 PyTorch 模型
+    model_path = os.path.join(model_dir, 'single_neuron_model.pth')
+    torch.save(model.state_dict(), model_path)
+    print(f"模型已保存为 {model_path}")
+    
+    # 保存 ONNX 模型
+    onnx_path = os.path.join(model_dir, 'single_neuron_model.onnx')
+    dummy = torch.randn(1, 1).float()
+    torch.onnx.export(model, dummy, onnx_path, opset_version=12)
+    print(f"ONNX 模型已保存为 {onnx_path}")
+    
     # 绘图
     plt.figure(figsize=(12,5))
     

@@ -123,8 +123,12 @@ def main():
     
     # 保存模型
     print("\n6. 保存模型...")
-    model.save('mnist_cnn_model.h5')
-    print("模型已保存为 mnist_cnn_model.h5")
+    import os
+    model_dir = 'f:\\My-study\\Model'
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, 'mnist_cnn_model.h5')
+    model.save(model_path)
+    print(f"模型已保存为 {model_path}")
 
 if __name__ == '__main__':
     main()

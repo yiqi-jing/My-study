@@ -215,6 +215,22 @@ def main():
     print("- 较大的学习率（如0.1-0.5）收敛速度快，但需注意过拟合")
     print("- 单层神经网络（感知机）能够很好地处理线性可分的二分类问题")
     print("- 对于鸢尾花数据集的前两个类别，线性模型已经能够达到很高的准确率")
+    
+    # 保存最佳模型
+    print("\n保存最佳模型...")
+    import os
+    import joblib
+    model_dir = 'f:\\My-study\\Model'
+    os.makedirs(model_dir, exist_ok=True)
+    
+    # 选择准确率最高的模型
+    best_idx = np.argmax([acc[1] for acc in accuracies])
+    best_model = models[best_idx]
+    best_lr = experiment_params[best_idx][0]
+    
+    model_path = os.path.join(model_dir, f'iris_perceptron_model_lr{best_lr}.joblib')
+    joblib.dump(best_model, model_path)
+    print(f"最佳模型已保存为 {model_path}")
 
 if __name__ == "__main__":
     main()

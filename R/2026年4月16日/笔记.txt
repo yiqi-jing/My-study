@@ -27,3 +27,7 @@
 
 6.生存分析
 (1) 生存对象函数: surv(time, event)
+(2) kaplan-meier估计：survfit
+(3) log-rank检验: survdiff
+(4) Cox比例风险模型: coxph
+(5) 比例风险假设检验: cox.zph

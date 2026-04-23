@@ -138,6 +138,16 @@ def main():
     plot_training_history(model)
     plot_confusion_matrix(cm, class_names)
     
+    # 保存模型
+    print("\n保存模型...")
+    import os
+    import joblib
+    model_dir = 'f:\\My-study\\Model'
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, 'wine_mlp_model.joblib')
+    joblib.dump(model, model_path)
+    print(f"模型已保存为 {model_path}")
+    
     print("\n实验完成！")
 
 if __name__ == "__main__":
