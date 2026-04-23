@@ -11,11 +11,4 @@
             "packageManager": "ms-python.python:pip"
         }
     ],
-    "http.proxy": "",
-    "https.proxy": "",
-    "http.noProxy": "*",
-    "http.proxySupport": "off",
-    "http.proxyStrictSsl": false,
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.typeCheckingMode": "basic"
 }
