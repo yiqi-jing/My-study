@@ -18,6 +18,20 @@ int InitList(DLinkList *L) {
     return 1;
 }
 
+// 2. 销毁（释放所有内存）
+void DestroyList(DLinkList *L) {
+    DLinkList p = (*L)->next; // p指向第一个有效数据节点
+    DLinkList q;
+    
+    while (p != *L) {         // 当p没有转回到头结点时，继续循环
+        q = p->next;          // q暂存p的下一个节点
+        free(p);              // 释放当前节点
+        p = q;                // p移动到下一个节点
+    }
+    free(*L);                 // 最后释放头结点
+    *L = NULL;                // 避免野指针
+}
+
 // 在第i个位置插入元素e
 int ListInsert(DLinkList L, int i, int e) {
     if (i < 1) return 0; // 位置不合法
