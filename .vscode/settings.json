@@ -69,15 +69,5 @@
         "fstream": "c",
         "ranges": "c",
         "variant": "c"
-    },
-    "mcp.servers": {
-        "filesystem": {
-            "command": "node",
-            "args": ["-g", "@modelcontextprotocol/server-filesystem"]
-        },
-        "terminal": {
-            "command": "node",
-            "args": ["-g", "@modelcontextprotocol/server-terminal"]
-        }
     }
 }
