@@ -1,0 +1,29 @@
+1.决策树
+分类树与回归树使用的包是： rpart
+树可视化函数：rpart.plot()
+决策树涉及的核心内容: 复杂度参数cp和剪枝
+决策时交叉验证选择最佳cp
+
+2.随机森林
+包：randomForest
+计算袋外误差，使用: OOB error
+计算变量的重要性，使用: importance、varlmPlot
+调参使用: caret对mtry镜像调试(也叫5折交叉验证)
+
+3.梯度提升机（GBM）
+包：gbm，用于回归、分类和生存分析
+涉及的关键参数:n.trees（树的数量）、interaction.depth（树的深度）、shrinkage（学习率）和n.minobsinnode（每个节点的最小观察数）
+展示绘图函数:plot.gbm()
+调参使用caret函数。
+
+4.支持向量机（SVM）
+包：e1071中的svm函数，可用于分类（type = "C-classification"）和回归（type = "eps-regression"）
+涉及的核函数线性函数、多项式函数和径向基（RBF）
+重要参数: cost（惩罚参数）和gamma（核函数的参数）
+网络调优方法:tune函数进行参数调优，使用交叉验证选择最佳参数组合。
+
+5.K近邻算法（KNN）
+使用的包和方法:class包中的knn或kknn
+需要使特征标准化，使用：scale()函数
+通过最佳K值（交叉验证）选择最优算法
+距离度量使用欧式或曼哈顿
