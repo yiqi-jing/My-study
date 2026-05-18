@@ -7,26 +7,6 @@ if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
 # 加载dplyr包
 library(dplyr)
 # 使用rep和sample函数生成数据
-<<<<<<< HEAD:R/2026年3月19（测试题）/test1.r
-# sales = data.frame(
-#     data = as.Date(rep(c('2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05','2023-01-06', '2023-01-07'), each = 3)),
-#     product = rep(c('A', 'B', 'C'), times = 7),
-#     quantity = sample(1:20, 21, replace = TRUE),
-#     price = rep(c(10, 15, 20), times = 7)
-# )
-
-# 使用expand.grid函数生成数据
-dates = seq.Date(as.Date('2023-01-01'), as.Date('2023-01-07'), by = "days")
-products = c('A', 'B', 'C')
-# 定义产品价格映射
-product_price_map = c(A = 10, B = 15, C = 20)
-
-sales = expand.grid(date = dates, product = products) %>%
-    mutate(quantity = sample(1:20, n(), replace = TRUE),
-           price = product_price_map[product])
-
-#  手动创建数据
-=======
 sales = data.frame(
     data = as.Date(rep(c('2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05','2023-01-06', '2023-01-07'), each = 3)),
     product = rep(c('A', 'B', 'C'), times = 7),
@@ -34,7 +14,6 @@ sales = data.frame(
     price = rep(c(10, 15, 20), times = 7)
 )
 
->>>>>>> f178cef696ba88ff3399e0be4c65ed1c095a6cd5:R/20260319（测试题）/test1.r
 # sales = data.frame(
 #     date = as.Date(c('2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05','2023-01-06', '2023-01-07', '2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05','2023-01-06', '2023-01-07',
 #                      '2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05','2023-01-06', '2023-01-07')),
