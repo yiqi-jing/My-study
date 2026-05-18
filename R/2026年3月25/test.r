@@ -5,7 +5,7 @@
 
 # departments包含 dept_id(101,102,103),dept_name("HR","Finance","IT")
 # 加载必要的库
-library(dplyr)
+if(!require(dplyr)) install.packages('dplyr'); library(dplyr)
 # 创建employees数据框
 employees = data.frame(
   em_id = 1:8,
