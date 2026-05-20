@@ -22,7 +22,7 @@ if(!require(dplyr)) install.packages('dplyr');
 library(dplyr)
 
 # 读取数据
-house_data <- read.csv("F:/My-study/R/2026年5月20日/house.csv", stringsAsFactors = FALSE)
+house_data = read.csv("F:/My-study/R/2026年5月20日/house.csv", stringsAsFactors = FALSE)
 
 # 查看数据结构
 cat("=== 数据结构 ===\n")
