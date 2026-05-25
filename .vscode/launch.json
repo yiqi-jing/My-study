@@ -24,5 +24,14 @@
             },
             "detail": "编译器: g++.exe (WinLibs MinGW-W64 GCC 16.1.0)"
         }
+    ],
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CryptoDemo",
+            "request": "launch",
+            "mainClass": "CryptoDemo",
+            "projectName": "My-study_da9e8583"
+        }
     ]
 }

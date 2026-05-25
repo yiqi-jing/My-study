@@ -66,5 +66,6 @@
         "stdlib.h": "c",
         "complex": "c",
         "*.inc": "c"
-    }
+    },
+    "java.debug.settings.onBuildFailureProceed": true
 }

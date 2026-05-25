@@ -8,6 +8,7 @@ import java.util.Base64;
  * 加密解密示例程序
  * 基于 HarmonyOS cryptoframework API 规范
  * 支持: AES、RSA、SHA、HMAC、DES 等算法
+ * 兼容 Java 8+
  */
 public class CryptoDemo {
 
@@ -127,7 +128,7 @@ public class CryptoDemo {
             return cipher.doFinal(ciphertext);
         }
 
-        // ✅ 修复：JDK17 兼容 RSA-PSS 签名
+        // RSA-PSS 签名
         public static byte[] sign(byte[] message, PrivateKey privateKey) throws Exception {
             Signature signature = Signature.getInstance("RSASSA-PSS");
             signature.setParameter(PSSParameterSpec.DEFAULT);
@@ -136,7 +137,7 @@ public class CryptoDemo {
             return signature.sign();
         }
 
-        // ✅ 修复：JDK17 兼容 RSA-PSS 验签
+        // RSA-PSS 验签
         public static boolean verify(byte[] message, byte[] signatureBytes, PublicKey publicKey) throws Exception {
             Signature signature = Signature.getInstance("RSASSA-PSS");
             signature.setParameter(PSSParameterSpec.DEFAULT);
@@ -273,7 +274,9 @@ public class CryptoDemo {
             // 这里返回一个模拟的加密结果
             byte[] ciphertext = new byte[plaintext.length + 16];
             System.arraycopy(plaintext, 0, ciphertext, 0, plaintext.length);
-            new SecureRandom().nextBytes(ciphertext, plaintext.length, 16);
+            byte[] randomBytes = new byte[16];
+            new SecureRandom().nextBytes(randomBytes);
+            System.arraycopy(randomBytes, 0, ciphertext, plaintext.length, 16);
             return ciphertext;
         }
 
@@ -303,6 +306,15 @@ public class CryptoDemo {
         }
     }
 
+    // Java 8 兼容：重复字符生成字符串
+    private static String repeatChar(char c, int count) {
+        StringBuilder sb = new StringBuilder(count);
+        for (int i = 0; i < count; i++) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     private static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
@@ -312,9 +324,9 @@ public class CryptoDemo {
     }
 
     public static void demoAES() throws Exception {
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
         System.out.println("AES 加密解密演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         byte[] key = AESCrypto.generateKey(256);
         byte[] plaintext = "Hello, HarmonyOS Crypto Framework!".getBytes();
@@ -338,9 +350,9 @@ public class CryptoDemo {
     }
 
     public static void demoRSA() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("RSA 加密解密演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         KeyPair keyPair = RSACrypto.generateKeyPair(2048);
         byte[] plaintext = "RSA Test Message".getBytes();
@@ -363,9 +375,9 @@ public class CryptoDemo {
     }
 
     public static void demoHash() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("消息摘要演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         byte[] data = "Hello, Crypto!".getBytes();
 
@@ -378,9 +390,9 @@ public class CryptoDemo {
     }
 
     public static void demoHMAC() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("HMAC 消息认证码演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         byte[] key = new byte[32];
         new SecureRandom().nextBytes(key);
@@ -394,9 +406,9 @@ public class CryptoDemo {
     }
 
     public static void demoPBKDF2() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("PBKDF2 密钥派生演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         String password = "myPassword123";
         PBKDF2Crypto.PBKDF2Result result = PBKDF2Crypto.deriveKey(password, 32, 100000);
@@ -411,9 +423,9 @@ public class CryptoDemo {
     }
 
     public static void demoEC() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("EC 椭圆曲线加密演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         KeyPair keyPair = ECCrypto.generateKeyPair();
         byte[] message = "EC Sign Test".getBytes();
@@ -428,9 +440,9 @@ public class CryptoDemo {
     }
 
     public static void demoSM9() throws Exception {
-        System.out.println("\n" + "=".repeat(50));
+        System.out.println("\n" + repeatChar('=', 50));
         System.out.println("SM9 国密算法演示");
-        System.out.println("=".repeat(50));
+        System.out.println(repeatChar('=', 50));
 
         byte[] masterKey = SM9Crypto.generateMasterKey();
         byte[] plaintext = "Hello, SM9!".getBytes();
@@ -468,9 +480,9 @@ public class CryptoDemo {
             demoEC();
             demoSM9();
 
-            System.out.println("\n" + "=".repeat(50));
+            System.out.println("\n" + repeatChar('=', 50));
             System.out.println("所有演示完成!");
-            System.out.println("=".repeat(50));
+            System.out.println(repeatChar('=', 50));
         } catch (Exception e) {
             e.printStackTrace();
         }
