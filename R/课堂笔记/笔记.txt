@@ -8,6 +8,7 @@
 (2) 预测概率与分类阈值
 (3) 混淆矩阵、POC曲线、AUC
 
+
 3.泊松回归
 (1) glm(family = poisson)
 (2) 便宜量(offset) 处理不同暴露时间
