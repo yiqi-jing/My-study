@@ -1,0 +1,45 @@
+pyecharts is a class library for generating ECharts charts. ECharts is a data visualization JS library of Baidu Open Source. The graphics generated with ECharts are very visual, and pyecharts is designed to interface with Python, making it easy to use data generation diagrams directly in Python.
+
+- Intro
+  - [Intro](en-us/intro)
+  - [Quickstart](en-us/quickstart)
+- Configuration
+  - [Global Options](en-us/global_options)
+  - [Series Options](en-us/series_options)
+- Basic Usage
+  - [Chart API](en-us/chart_api)
+  - [Demo Data](en-us/demo_data)
+  - [Global Vars](en-us/global_vars)
+- Chart Types
+  - [Basic Charts](en-us/basic_charts)
+  - [Rectangular Charts](en-us/rectangular_charts)
+  - [Tree_Charts](en-us/tree_charts)
+  - [Geography Charts](en-us/geography_charts)
+  - [3D Charts](en-us/3d_charts)
+  - [composite_charts](en-us/composite_charts)
+  - [HTML Components](en-us/html_components)
+- Advanced
+  - [Parameters](en-us/parameters)
+  - [Data Format](en-us/data_format)
+  - [Themes](en-us/themes)
+  - [Maps](en-us/maps)
+  - [Render Images](en-us/render_images)
+  - [Notebook](en-us/notebook)
+  - [Javascript](en-us/javascript)
+  - [Assets](en-us/assets_host)
+- Web Framework
+  - [Flask](en-us/web_flask)
+  - [Sanic](en-us/web_sanic)
+  - [Django](en-us/web_django)
+  - [Tornado](en-us/web_tornado)
+- Other Resource
+  - [Datasets](en-us/datasets)
+  - [pyinstaller package](en-us/pyinstaller_pack)
+- Release
+  - [ChangeLog](en-us/changelog)
+  - [ReleaseNote](zh-cn/release-note/)
+- Project Develop
+  - [Contribution](en-us/contribution)
+  - [Technical](en-us/technical)
+  - [Donors](zh-cn/donors)
+  - [FAQ](en-us/faq)

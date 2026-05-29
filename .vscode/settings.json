@@ -5,6 +5,7 @@
     "files.watcherExclude": {
         "**/target": true
     },
+    
     "files.associations": {
         "*.dbclient-js": "javascript",
         "format": "c",
@@ -67,5 +68,20 @@
         "complex": "c",
         "*.inc": "c"
     },
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+        "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.env.windows": {
+        "PYTHONIOENCODING": "utf-8"
+    },
+        // 设置默认编码为 UTF-8 with BOM
+    "files.encoding": "utf8bom",
+    
+    // 为特定语言设置编码
+    "[c]": {
+        "files.encoding": "utf8bom"
+    },
+    "[cpp]": {
+        "files.encoding": "utf8bom"
+    },
+
 }

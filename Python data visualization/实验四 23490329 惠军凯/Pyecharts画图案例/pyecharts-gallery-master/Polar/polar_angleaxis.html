@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v6/echarts.min.js"></script>
+
+    
+</head>
+<body >
+    <div id="b7f702efa39b40e08d87dc9786d42bd4" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+        var chart_b7f702efa39b40e08d87dc9786d42bd4 = echarts.init(
+            document.getElementById('b7f702efa39b40e08d87dc9786d42bd4'), 'white', {renderer: 'canvas', locale: 'ZH'});
+        var option_b7f702efa39b40e08d87dc9786d42bd4 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "series": [
+        {
+            "type": "bar",
+            "name": "A",
+            "coordinateSystem": "polar",
+            "symbolSize": 4,
+            "data": [
+                1,
+                2,
+                3,
+                4,
+                3,
+                5,
+                1
+            ],
+            "stack": "stack0",
+            "label": {
+                "show": false,
+                "margin": 8,
+                "richInheritPlainLabel": true,
+                "valueAnimation": false
+            },
+            "areaStyle": {
+                "opacity": 0
+            }
+        },
+        {
+            "type": "bar",
+            "name": "B",
+            "coordinateSystem": "polar",
+            "symbolSize": 4,
+            "data": [
+                2,
+                4,
+                6,
+                1,
+                2,
+                3,
+                1
+            ],
+            "stack": "stack0",
+            "label": {
+                "show": false,
+                "margin": 8,
+                "richInheritPlainLabel": true,
+                "valueAnimation": false
+            },
+            "areaStyle": {
+                "opacity": 0
+            }
+        },
+        {
+            "type": "bar",
+            "name": "C",
+            "coordinateSystem": "polar",
+            "symbolSize": 4,
+            "data": [
+                1,
+                2,
+                3,
+                4,
+                1,
+                2,
+                5
+            ],
+            "stack": "stack0",
+            "label": {
+                "show": false,
+                "margin": 8,
+                "richInheritPlainLabel": true,
+                "valueAnimation": false
+            },
+            "areaStyle": {
+                "opacity": 0
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "A",
+                "B",
+                "C"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10,
+            "triggerEvent": false
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "displayTransition": true,
+        "textStyle": {
+            "fontSize": 14,
+            "richInheritPlainLabel": true
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "radiusAxis": {
+        "nameGap": 15,
+        "inverse": false,
+        "scale": false,
+        "splitNumber": 5,
+        "minInterval": 0
+    },
+    "angleAxis": {
+        "startAngle": 90,
+        "data": [
+            "\u5468\u4e00",
+            "\u5468\u4e8c",
+            "\u5468\u4e09",
+            "\u5468\u56db",
+            "\u5468\u4e94",
+            "\u5468\u516d",
+            "\u5468\u65e5"
+        ],
+        "clockwise": false,
+        "type": "category",
+        "scale": false,
+        "splitNumber": 5
+    },
+    "polar": {
+        "center": [
+            "50%",
+            "50%"
+        ],
+        "zlevel": 0,
+        "z": 2
+    },
+    "title": [
+        {
+            "show": true,
+            "text": "Polar-AngleAxis",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ]
+};
+        chart_b7f702efa39b40e08d87dc9786d42bd4.setOption(option_b7f702efa39b40e08d87dc9786d42bd4);
+    </script>
+</body>
+</html>

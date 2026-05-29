@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v6/echarts.min.js"></script>
+
+    
+</head>
+<body >
+    <div id="ab9ab8cb6e1b479e9ca03c5ace093ea5" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+        var chart_ab9ab8cb6e1b479e9ca03c5ace093ea5 = echarts.init(
+            document.getElementById('ab9ab8cb6e1b479e9ca03c5ace093ea5'), 'white', {renderer: 'canvas', locale: 'ZH'});
+        var option_ab9ab8cb6e1b479e9ca03c5ace093ea5 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "series": [
+        {
+            "type": "radar",
+            "name": "\u9884\u7b97\u5206\u914d",
+            "data": [
+                [
+                    4300,
+                    10000,
+                    28000,
+                    35000,
+                    50000,
+                    19000
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8,
+                "richInheritPlainLabel": true,
+                "valueAnimation": false
+            },
+            "selectedMode": false,
+            "zlevel": 0,
+            "z": 2,
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": false
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "\u5b9e\u9645\u5f00\u9500",
+            "data": [
+                [
+                    5000,
+                    14000,
+                    28000,
+                    31000,
+                    42000,
+                    21000
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8,
+                "richInheritPlainLabel": true,
+                "valueAnimation": false
+            },
+            "selectedMode": false,
+            "zlevel": 0,
+            "z": 2,
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": false
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u9884\u7b97\u5206\u914d",
+                "\u5b9e\u9645\u5f00\u9500"
+            ],
+            "selected": {},
+            "selectedMode": "single",
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10,
+            "triggerEvent": false
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "displayTransition": true,
+        "textStyle": {
+            "fontSize": 14,
+            "richInheritPlainLabel": true
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "radar": [
+        {
+            "indicator": [
+                {
+                    "name": "\u9500\u552e",
+                    "max": 6500
+                },
+                {
+                    "name": "\u7ba1\u7406",
+                    "max": 16000
+                },
+                {
+                    "name": "\u4fe1\u606f\u6280\u672f",
+                    "max": 30000
+                },
+                {
+                    "name": "\u5ba2\u670d",
+                    "max": 38000
+                },
+                {
+                    "name": "\u7814\u53d1",
+                    "max": 52000
+                },
+                {
+                    "name": "\u5e02\u573a",
+                    "max": 25000
+                }
+            ],
+            "startAngle": 90,
+            "name": {
+                "textStyle": {
+                    "richInheritPlainLabel": true
+                }
+            },
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": false
+                }
+            },
+            "splitArea": {
+                "show": true,
+                "areaStyle": {
+                    "opacity": 0
+                }
+            },
+            "axisLine": {
+                "show": true,
+                "onZero": true,
+                "onZeroAxisIndex": 0
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": true,
+            "text": "Radar-\u5355\u4f8b\u6a21\u5f0f",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ]
+};
+        chart_ab9ab8cb6e1b479e9ca03c5ace093ea5.setOption(option_ab9ab8cb6e1b479e9ca03c5ace093ea5);
+    </script>
+</body>
+</html>

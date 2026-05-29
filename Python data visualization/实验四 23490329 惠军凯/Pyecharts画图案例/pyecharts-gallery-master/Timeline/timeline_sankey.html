@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v6/echarts.min.js"></script>
+
+    
+</head>
+<body >
+    <div id="e650185f5287488fa31047d6f8d21ee8" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+        var chart_e650185f5287488fa31047d6f8d21ee8 = echarts.init(
+            document.getElementById('e650185f5287488fa31047d6f8d21ee8'), 'white', {renderer: 'canvas', locale: 'ZH'});
+        var option_e650185f5287488fa31047d6f8d21ee8 = {
+    "baseOption": {
+        "series": [
+            {
+                "type": "sankey",
+                "name": "sankey",
+                "data": [
+                    {
+                        "name": "\u5546\u5bb6A"
+                    },
+                    {
+                        "name": "\u5546\u5bb6B"
+                    },
+                    {
+                        "name": "\u5546\u5bb6C"
+                    }
+                ],
+                "links": [
+                    {
+                        "source": "\u5546\u5bb6A",
+                        "target": "\u5546\u5bb6B",
+                        "value": 72
+                    },
+                    {
+                        "source": "\u5546\u5bb6B",
+                        "target": "\u5546\u5bb6C",
+                        "value": 21
+                    }
+                ],
+                "left": "5%",
+                "top": "5%",
+                "right": "20%",
+                "bottom": "5%",
+                "nodeWidth": 20,
+                "nodeGap": 8,
+                "nodeAlign": "justify",
+                "orient": "horizontal",
+                "draggable": true,
+                "zoom": 1,
+                "roam": false,
+                "label": {
+                    "show": true,
+                    "position": "right",
+                    "margin": 8,
+                    "richInheritPlainLabel": true,
+                    "valueAnimation": false
+                },
+                "lineStyle": {
+                    "show": false,
+                    "opacity": 0.2,
+                    "curveness": 0.5,
+                    "color": "source"
+                }
+            }
+        ],
+        "timeline": {
+            "axisType": "category",
+            "currentIndex": 0,
+            "orient": "horizontal",
+            "autoPlay": false,
+            "controlPosition": "left",
+            "loop": true,
+            "rewind": false,
+            "show": true,
+            "inverse": false,
+            "bottom": "-5px",
+            "progress": {},
+            "data": [
+                "2015\u5e74",
+                "2016\u5e74",
+                "2017\u5e74",
+                "2018\u5e74",
+                "2019\u5e74"
+            ]
+        },
+        "legend": [
+            {
+                "data": [
+                    "sankey"
+                ],
+                "selected": {},
+                "show": true,
+                "padding": 5,
+                "itemGap": 10,
+                "itemWidth": 25,
+                "itemHeight": 14,
+                "backgroundColor": "transparent",
+                "borderColor": "#ccc",
+                "borderRadius": 0,
+                "pageButtonItemGap": 5,
+                "pageButtonPosition": "end",
+                "pageFormatter": "{current}/{total}",
+                "pageIconColor": "#2f4554",
+                "pageIconInactiveColor": "#aaa",
+                "pageIconSize": 15,
+                "animationDurationUpdate": 800,
+                "selector": false,
+                "selectorPosition": "auto",
+                "selectorItemGap": 7,
+                "selectorButtonGap": 10,
+                "triggerEvent": false
+            }
+        ]
+    },
+    "options": [
+        {
+            "legend": [
+                {
+                    "data": [
+                        "sankey"
+                    ],
+                    "selected": {},
+                    "show": true,
+                    "padding": 5,
+                    "itemGap": 10,
+                    "itemWidth": 25,
+                    "itemHeight": 14,
+                    "backgroundColor": "transparent",
+                    "borderColor": "#ccc",
+                    "borderRadius": 0,
+                    "pageButtonItemGap": 5,
+                    "pageButtonPosition": "end",
+                    "pageFormatter": "{current}/{total}",
+                    "pageIconColor": "#2f4554",
+                    "pageIconInactiveColor": "#aaa",
+                    "pageIconSize": 15,
+                    "animationDurationUpdate": 800,
+                    "selector": false,
+                    "selectorPosition": "auto",
+                    "selectorItemGap": 7,
+                    "selectorButtonGap": 10,
+                    "triggerEvent": false
+                }
+            ],
+            "series": [
+                {
+                    "type": "sankey",
+                    "name": "sankey",
+                    "data": [
+                        {
+                            "name": "\u5546\u5bb6A"
+                        },
+                        {
+                            "name": "\u5546\u5bb6B"
+                        },
+                        {
+                            "name": "\u5546\u5bb6C"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "source": "\u5546\u5bb6A",
+                            "target": "\u5546\u5bb6B",
+                            "value": 140
+                        },
+                        {
+                            "source": "\u5546\u5bb6B",
+                            "target": "\u5546\u5bb6C",
+                            "value": 92
+                        }
+                    ],
+                    "left": "5%",
+                    "top": "5%",
+                    "right": "20%",
+                    "bottom": "5%",
+                    "nodeWidth": 20,
+                    "nodeGap": 8,
+                    "nodeAlign": "justify",
+                    "orient": "horizontal",
+                    "draggable": true,
+                    "zoom": 1,
+                    "roam": false,
+                    "label": {
+                        "show": true,
+                        "position": "right",
+                        "margin": 8,
+                        "richInheritPlainLabel": true,
+                        "valueAnimation": false
+                    },
+                    "lineStyle": {
+                        "show": false,
+                        "opacity": 0.2,
+                        "curveness": 0.5,
+                        "color": "source"
+                    }
+                }
+            ],
+            "title": [
+                {
+                    "show": true,
+                    "text": "2015\u5e74\u5546\u5e97\uff08A, B, C\uff09\u8425\u4e1a\u989d\u5dee",
+                    "target": "blank",
+                    "subtarget": "blank",
+                    "padding": 5,
+                    "itemGap": 10,
+                    "textAlign": "auto",
+                    "textVerticalAlign": "auto",
+                    "triggerEvent": false
+                }
+            ],
+            "tooltip": {
+                "show": true,
+                "trigger": "item",
+                "triggerOn": "mousemove|click",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "showContent": true,
+                "alwaysShowContent": false,
+                "showDelay": 0,
+                "hideDelay": 100,
+                "enterable": false,
+                "confine": false,
+                "appendToBody": false,
+                "transitionDuration": 0.4,
+                "displayTransition": true,
+                "textStyle": {
+                    "fontSize": 14,
+                    "richInheritPlainLabel": true
+                },
+                "borderWidth": 0,
+                "padding": 5,
+                "order": "seriesAsc"
+            }
+        },
+        {
+            "legend": [
+                {
+                    "data": [
+                        "sankey"
+                    ],
+                    "selected": {},
+                    "show": true,
+                    "padding": 5,
+                    "itemGap": 10,
+                    "itemWidth": 25,
+                    "itemHeight": 14,
+                    "backgroundColor": "transparent",
+                    "borderColor": "#ccc",
+                    "borderRadius": 0,
+                    "pageButtonItemGap": 5,
+                    "pageButtonPosition": "end",
+                    "pageFormatter": "{current}/{total}",
+                    "pageIconColor": "#2f4554",
+                    "pageIconInactiveColor": "#aaa",
+                    "pageIconSize": 15,
+                    "animationDurationUpdate": 800,
+                    "selector": false,
+                    "selectorPosition": "auto",
+                    "selectorItemGap": 7,
+                    "selectorButtonGap": 10,
+                    "triggerEvent": false
+                }
+            ],
+            "series": [
+                {
+                    "type": "sankey",
+                    "name": "sankey",
+                    "data": [
+                        {
+                            "name": "\u5546\u5bb6A"
+                        },
+                        {
+                            "name": "\u5546\u5bb6B"
+                        },
+                        {
+                            "name": "\u5546\u5bb6C"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "source": "\u5546\u5bb6A",
+                            "target": "\u5546\u5bb6B",
+                            "value": 36
+                        },
+                        {
+                            "source": "\u5546\u5bb6B",
+                            "target": "\u5546\u5bb6C",
+                            "value": 81
+                        }
+                    ],
+                    "left": "5%",
+                    "top": "5%",
+                    "right": "20%",
+                    "bottom": "5%",
+                    "nodeWidth": 20,
+                    "nodeGap": 8,
+                    "nodeAlign": "justify",
+                    "orient": "horizontal",
+                    "draggable": true,
+                    "zoom": 1,
+                    "roam": false,
+                    "label": {
+                        "show": true,
+                        "position": "right",
+                        "margin": 8,
+                        "richInheritPlainLabel": true,
+                        "valueAnimation": false
+                    },
+                    "lineStyle": {
+                        "show": false,
+                        "opacity": 0.2,
+                        "curveness": 0.5,
+                        "color": "source"
+                    }
+                }
+            ],
+            "title": [
+                {
+                    "show": true,
+                    "text": "2016\u5e74\u5546\u5e97\uff08A, B, C\uff09\u8425\u4e1a\u989d\u5dee",
+                    "target": "blank",
+                    "subtarget": "blank",
+                    "padding": 5,
+                    "itemGap": 10,
+                    "textAlign": "auto",
+                    "textVerticalAlign": "auto",
+                    "triggerEvent": false
+                }
+            ],
+            "tooltip": {
+                "show": true,
+                "trigger": "item",
+                "triggerOn": "mousemove|click",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "showContent": true,
+                "alwaysShowContent": false,
+                "showDelay": 0,
+                "hideDelay": 100,
+                "enterable": false,
+                "confine": false,
+                "appendToBody": false,
+                "transitionDuration": 0.4,
+                "displayTransition": true,
+                "textStyle": {
+                    "fontSize": 14,
+                    "richInheritPlainLabel": true
+                },
+                "borderWidth": 0,
+                "padding": 5,
+                "order": "seriesAsc"
+            }
+        },
+        {
+            "legend": [
+                {
+                    "data": [
+                        "sankey"
+                    ],
+                    "selected": {},
+                    "show": true,
+                    "padding": 5,
+                    "itemGap": 10,
+                    "itemWidth": 25,
+                    "itemHeight": 14,
+                    "backgroundColor": "transparent",
+                    "borderColor": "#ccc",
+                    "borderRadius": 0,
+                    "pageButtonItemGap": 5,
+                    "pageButtonPosition": "end",
+                    "pageFormatter": "{current}/{total}",
+                    "pageIconColor": "#2f4554",
+                    "pageIconInactiveColor": "#aaa",
+                    "pageIconSize": 15,
+                    "animationDurationUpdate": 800,
+                    "selector": false,
+                    "selectorPosition": "auto",
+                    "selectorItemGap": 7,
+                    "selectorButtonGap": 10,
+                    "triggerEvent": false
+                }
+            ],
+            "series": [
+                {
+                    "type": "sankey",
+                    "name": "sankey",
+                    "data": [
+                        {
+                            "name": "\u5546\u5bb6A"
+                        },
+                        {
+                            "name": "\u5546\u5bb6B"
+                        },
+                        {
+                            "name": "\u5546\u5bb6C"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "source": "\u5546\u5bb6A",
+                            "target": "\u5546\u5bb6B",
+                            "value": 21
+                        },
+                        {
+                            "source": "\u5546\u5bb6B",
+                            "target": "\u5546\u5bb6C",
+                            "value": 140
+                        }
+                    ],
+                    "left": "5%",
+                    "top": "5%",
+                    "right": "20%",
+                    "bottom": "5%",
+                    "nodeWidth": 20,
+                    "nodeGap": 8,
+                    "nodeAlign": "justify",
+                    "orient": "horizontal",
+                    "draggable": true,
+                    "zoom": 1,
+                    "roam": false,
+                    "label": {
+                        "show": true,
+                        "position": "right",
+                        "margin": 8,
+                        "richInheritPlainLabel": true,
+                        "valueAnimation": false
+                    },
+                    "lineStyle": {
+                        "show": false,
+                        "opacity": 0.2,
+                        "curveness": 0.5,
+                        "color": "source"
+                    }
+                }
+            ],
+            "title": [
+                {
+                    "show": true,
+                    "text": "2017\u5e74\u5546\u5e97\uff08A, B, C\uff09\u8425\u4e1a\u989d\u5dee",
+                    "target": "blank",
+                    "subtarget": "blank",
+                    "padding": 5,
+                    "itemGap": 10,
+                    "textAlign": "auto",
+                    "textVerticalAlign": "auto",
+                    "triggerEvent": false
+                }
+            ],
+            "tooltip": {
+                "show": true,
+                "trigger": "item",
+                "triggerOn": "mousemove|click",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "showContent": true,
+                "alwaysShowContent": false,
+                "showDelay": 0,
+                "hideDelay": 100,
+                "enterable": false,
+                "confine": false,
+                "appendToBody": false,
+                "transitionDuration": 0.4,
+                "displayTransition": true,
+                "textStyle": {
+                    "fontSize": 14,
+                    "richInheritPlainLabel": true
+                },
+                "borderWidth": 0,
+                "padding": 5,
+                "order": "seriesAsc"
+            }
+        },
+        {
+            "legend": [
+                {
+                    "data": [
+                        "sankey"
+                    ],
+                    "selected": {},
+                    "show": true,
+                    "padding": 5,
+                    "itemGap": 10,
+                    "itemWidth": 25,
+                    "itemHeight": 14,
+                    "backgroundColor": "transparent",
+                    "borderColor": "#ccc",
+                    "borderRadius": 0,
+                    "pageButtonItemGap": 5,
+                    "pageButtonPosition": "end",
+                    "pageFormatter": "{current}/{total}",
+                    "pageIconColor": "#2f4554",
+                    "pageIconInactiveColor": "#aaa",
+                    "pageIconSize": 15,
+                    "animationDurationUpdate": 800,
+                    "selector": false,
+                    "selectorPosition": "auto",
+                    "selectorItemGap": 7,
+                    "selectorButtonGap": 10,
+                    "triggerEvent": false
+                }
+            ],
+            "series": [
+                {
+                    "type": "sankey",
+                    "name": "sankey",
+                    "data": [
+                        {
+                            "name": "\u5546\u5bb6A"
+                        },
+                        {
+                            "name": "\u5546\u5bb6B"
+                        },
+                        {
+                            "name": "\u5546\u5bb6C"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "source": "\u5546\u5bb6A",
+                            "target": "\u5546\u5bb6B",
+                            "value": 121
+                        },
+                        {
+                            "source": "\u5546\u5bb6B",
+                            "target": "\u5546\u5bb6C",
+                            "value": 35
+                        }
+                    ],
+                    "left": "5%",
+                    "top": "5%",
+                    "right": "20%",
+                    "bottom": "5%",
+                    "nodeWidth": 20,
+                    "nodeGap": 8,
+                    "nodeAlign": "justify",
+                    "orient": "horizontal",
+                    "draggable": true,
+                    "zoom": 1,
+                    "roam": false,
+                    "label": {
+                        "show": true,
+                        "position": "right",
+                        "margin": 8,
+                        "richInheritPlainLabel": true,
+                        "valueAnimation": false
+                    },
+                    "lineStyle": {
+                        "show": false,
+                        "opacity": 0.2,
+                        "curveness": 0.5,
+                        "color": "source"
+                    }
+                }
+            ],
+            "title": [
+                {
+                    "show": true,
+                    "text": "2018\u5e74\u5546\u5e97\uff08A, B, C\uff09\u8425\u4e1a\u989d\u5dee",
+                    "target": "blank",
+                    "subtarget": "blank",
+                    "padding": 5,
+                    "itemGap": 10,
+                    "textAlign": "auto",
+                    "textVerticalAlign": "auto",
+                    "triggerEvent": false
+                }
+            ],
+            "tooltip": {
+                "show": true,
+                "trigger": "item",
+                "triggerOn": "mousemove|click",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "showContent": true,
+                "alwaysShowContent": false,
+                "showDelay": 0,
+                "hideDelay": 100,
+                "enterable": false,
+                "confine": false,
+                "appendToBody": false,
+                "transitionDuration": 0.4,
+                "displayTransition": true,
+                "textStyle": {
+                    "fontSize": 14,
+                    "richInheritPlainLabel": true
+                },
+                "borderWidth": 0,
+                "padding": 5,
+                "order": "seriesAsc"
+            }
+        },
+        {
+            "legend": [
+                {
+                    "data": [
+                        "sankey"
+                    ],
+                    "selected": {},
+                    "show": true,
+                    "padding": 5,
+                    "itemGap": 10,
+                    "itemWidth": 25,
+                    "itemHeight": 14,
+                    "backgroundColor": "transparent",
+                    "borderColor": "#ccc",
+                    "borderRadius": 0,
+                    "pageButtonItemGap": 5,
+                    "pageButtonPosition": "end",
+                    "pageFormatter": "{current}/{total}",
+                    "pageIconColor": "#2f4554",
+                    "pageIconInactiveColor": "#aaa",
+                    "pageIconSize": 15,
+                    "animationDurationUpdate": 800,
+                    "selector": false,
+                    "selectorPosition": "auto",
+                    "selectorItemGap": 7,
+                    "selectorButtonGap": 10,
+                    "triggerEvent": false
+                }
+            ],
+            "series": [
+                {
+                    "type": "sankey",
+                    "name": "sankey",
+                    "data": [
+                        {
+                            "name": "\u5546\u5bb6A"
+                        },
+                        {
+                            "name": "\u5546\u5bb6B"
+                        },
+                        {
+                            "name": "\u5546\u5bb6C"
+                        }
+                    ],
+                    "links": [
+                        {
+                            "source": "\u5546\u5bb6A",
+                            "target": "\u5546\u5bb6B",
+                            "value": 72
+                        },
+                        {
+                            "source": "\u5546\u5bb6B",
+                            "target": "\u5546\u5bb6C",
+                            "value": 21
+                        }
+                    ],
+                    "left": "5%",
+                    "top": "5%",
+                    "right": "20%",
+                    "bottom": "5%",
+                    "nodeWidth": 20,
+                    "nodeGap": 8,
+                    "nodeAlign": "justify",
+                    "orient": "horizontal",
+                    "draggable": true,
+                    "zoom": 1,
+                    "roam": false,
+                    "label": {
+                        "show": true,
+                        "position": "right",
+                        "margin": 8,
+                        "richInheritPlainLabel": true,
+                        "valueAnimation": false
+                    },
+                    "lineStyle": {
+                        "show": false,
+                        "opacity": 0.2,
+                        "curveness": 0.5,
+                        "color": "source"
+                    }
+                }
+            ],
+            "title": [
+                {
+                    "show": true,
+                    "text": "2019\u5e74\u5546\u5e97\uff08A, B, C\uff09\u8425\u4e1a\u989d\u5dee",
+                    "target": "blank",
+                    "subtarget": "blank",
+                    "padding": 5,
+                    "itemGap": 10,
+                    "textAlign": "auto",
+                    "textVerticalAlign": "auto",
+                    "triggerEvent": false
+                }
+            ],
+            "tooltip": {
+                "show": true,
+                "trigger": "item",
+                "triggerOn": "mousemove|click",
+                "axisPointer": {
+                    "type": "line"
+                },
+                "showContent": true,
+                "alwaysShowContent": false,
+                "showDelay": 0,
+                "hideDelay": 100,
+                "enterable": false,
+                "confine": false,
+                "appendToBody": false,
+                "transitionDuration": 0.4,
+                "displayTransition": true,
+                "textStyle": {
+                    "fontSize": 14,
+                    "richInheritPlainLabel": true
+                },
+                "borderWidth": 0,
+                "padding": 5,
+                "order": "seriesAsc"
+            }
+        }
+    ]
+};
+        chart_e650185f5287488fa31047d6f8d21ee8.setOption(option_e650185f5287488fa31047d6f8d21ee8);
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# 创建一个数据框grades，包含'student_id','name','math','english','science'五列，
+ # 创建一个数据框grades，包含'student_id','name','math','english','science'五列，
 # 分别表示学生ID、姓名、数学成绩、英语成绩和科学成绩
 
 # 安装依赖包（仅在未安装时）
