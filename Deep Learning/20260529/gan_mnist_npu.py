@@ -1,4 +1,4 @@
-﻿import numpy as np
+﻿﻿import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -196,14 +196,17 @@ def convert_to_openvino(generator):
     wrapped_gen = GeneratorWrapper(generator)
     wrapped_gen.eval()
     
+    for module in wrapped_gen.modules():
+        if isinstance(module, nn.BatchNorm1d):
+            module.eval()
+    
     dummy_input = torch.randn(1, latent_dim)
     
     onnx_path = 'gan_generator.onnx'
     torch.onnx.export(wrapped_gen, dummy_input, onnx_path,
                      input_names=['latent'],
                      output_names=['generated_image'],
-                     dynamic_axes={'latent': {0: 'batch_size'},
-                                  'generated_image': {0: 'batch_size'}})
+                     dynamo=False)
     
     core = ov.Core()
     model_onnx = core.read_model(onnx_path)
@@ -233,13 +236,38 @@ def check_npu_device(core):
         return False
 
 def generate_with_npu(core, model_onnx, num_images=16, device_name='NPU'):
-    if 'NPU' not in core.available_devices:
-        device_name = 'CPU'
+    actual_device = device_name
+    
+    if device_name == 'NPU' and 'NPU' not in core.available_devices:
+        device_name = 'GPU' if 'GPU' in core.available_devices else 'CPU'
         print(f"NPU不可用，使用{device_name}")
     
-    print(f"\n使用{device_name}生成图像...")
+    print(f"\n尝试使用{device_name}生成图像...")
     
-    compiled_model = core.compile_model(model_onnx, device_name)
+    compiled_model = None
+    try:
+        compiled_model = core.compile_model(model_onnx, device_name)
+    except Exception as e:
+        print(f"{device_name}编译失败: {e}")
+        if device_name == 'NPU':
+            print("尝试使用GPU...")
+            device_name = 'GPU'
+            try:
+                compiled_model = core.compile_model(model_onnx, device_name)
+            except Exception as e2:
+                print(f"GPU编译失败: {e2}")
+                device_name = 'CPU'
+                compiled_model = core.compile_model(model_onnx, device_name)
+        elif device_name == 'GPU':
+            device_name = 'CPU'
+            compiled_model = core.compile_model(model_onnx, device_name)
+    
+    if compiled_model is None:
+        raise RuntimeError("无法在任何设备上编译模型")
+    
+    actual_device = device_name
+    print(f"使用{actual_device}进行推理...")
+    
     output_layer = compiled_model.output(0)
     
     inference_times = []
@@ -259,7 +287,7 @@ def generate_with_npu(core, model_onnx, num_images=16, device_name='NPU'):
     avg_time = np.mean(inference_times) * 1000
     print(f"平均推理时间: {avg_time:.2f} ms")
     
-    return generated_images, avg_time, device_name
+    return generated_images, avg_time, actual_device
 
 def compare_performance(core, model_onnx, generator, device, num_samples=100):
     print(f"\n性能对比测试 ({num_samples}次推理)...")
@@ -287,23 +315,42 @@ def compare_performance(core, model_onnx, generator, device, num_samples=100):
         ov_cpu_times.append(time.time() - start)
     ov_cpu_avg = np.mean(ov_cpu_times) * 1000
     
-    npu_available = 'NPU' in core.available_devices
+    gpu_avg = None
+    if 'GPU' in core.available_devices:
+        try:
+            compiled_model_gpu = core.compile_model(model_onnx, 'GPU')
+            gpu_times = []
+            for _ in range(num_samples):
+                z = np.random.randn(1, latent_dim).astype(np.float32)
+                start = time.time()
+                _ = compiled_model_gpu([z])[output_layer]
+                gpu_times.append(time.time() - start)
+            gpu_avg = np.mean(gpu_times) * 1000
+        except Exception as e:
+            print(f"GPU编译失败: {e}")
+    
     npu_avg = None
-    if npu_available:
-        compiled_model_npu = core.compile_model(model_onnx, 'NPU')
-        npu_times = []
-        for _ in range(num_samples):
-            z = np.random.randn(1, latent_dim).astype(np.float32)
-            start = time.time()
-            _ = compiled_model_npu([z])[output_layer]
-            npu_times.append(time.time() - start)
-        npu_avg = np.mean(npu_times) * 1000
+    if 'NPU' in core.available_devices:
+        try:
+            compiled_model_npu = core.compile_model(model_onnx, 'NPU')
+            npu_times = []
+            for _ in range(num_samples):
+                z = np.random.randn(1, latent_dim).astype(np.float32)
+                start = time.time()
+                _ = compiled_model_npu([z])[output_layer]
+                npu_times.append(time.time() - start)
+            npu_avg = np.mean(npu_times) * 1000
+        except Exception as e:
+            print(f"NPU编译失败: {e}")
+            print("提示: GAN模型中的某些操作可能不被NPU完全支持")
     
     print("\n" + "="*50)
     print("性能对比结果:")
     print("="*50)
     print(f"PyTorch ({device.type.upper()}):  {pytorch_avg:.2f} ms")
     print(f"OpenVINO CPU:      {ov_cpu_avg:.2f} ms  (加速: {pytorch_avg/ov_cpu_avg:.2f}x)")
+    if gpu_avg:
+        print(f"OpenVINO GPU:      {gpu_avg:.2f} ms  (加速: {pytorch_avg/gpu_avg:.2f}x)")
     if npu_avg:
         print(f"OpenVINO NPU:      {npu_avg:.2f} ms  (加速: {pytorch_avg/npu_avg:.2f}x)")
     print("="*50)
@@ -362,10 +409,10 @@ def main():
             core, model_onnx, generator, device, num_samples=100
         )
         
-        print("\n使用NPU生成最终图像...")
-        device_name = 'NPU' if npu_available else 'CPU'
+        print("\n生成最终图像...")
+        best_device = 'NPU' if npu_avg else ('GPU' if 'GPU' in core.available_devices else 'CPU')
         generated_images, avg_time, actual_device = generate_with_npu(
-            core, model_onnx, num_images=16, device_name=device_name
+            core, model_onnx, num_images=16, device_name=best_device
         )
         
         fig = visualize_results(generated_images, f"OpenVINO {actual_device} 生成结果")

@@ -1,0 +1,893 @@
+<?xml version="1.0"?>
+<net name="onnx_Frontend_IR" version="11">
+	<layers>
+		<layer id="0" name="latent" type="Parameter" version="opset1">
+			<data shape="1,100" element_type="f32" />
+			<output>
+				<port id="0" precision="FP32" names="latent">
+					<dim>1</dim>
+					<dim>100</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="1" name="gen.model.0.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="128, 100" offset="0" size="51200" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.0.weight">
+					<dim>128</dim>
+					<dim>100</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="2" name="/gen/model/model.0/Gemm/WithoutBiases" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>100</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>128</dim>
+					<dim>100</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="3" name="Constant_4" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="4" name="Multiply_7" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+				<port id="1" precision="FP32" />
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="5" name="Constant_5" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="6" name="gen.model.0.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="128" offset="51204" size="512" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.0.bias">
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="7" name="Multiply_8" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="FP32">
+					<dim>128</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="8" name="/gen/model/model.0/Gemm" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>128</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.0/Gemm_output_0">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="9" name="Constant_11" type="Const" version="opset1">
+			<data element_type="f32" shape="1" offset="51716" size="4" />
+			<output>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="10" name="/gen/model/model.1/LeakyRelu" type="PReLU" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.1/LeakyRelu_output_0">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="11" name="gen.model.2.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="256, 128" offset="51720" size="131072" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.2.weight">
+					<dim>256</dim>
+					<dim>128</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="12" name="/gen/model/model.2/Gemm/WithoutBiases" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>128</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>256</dim>
+					<dim>128</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="13" name="Constant_15" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="14" name="Multiply_18" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+				<port id="1" precision="FP32" />
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="15" name="Constant_16" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="16" name="gen.model.2.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="256" offset="182792" size="1024" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.2.bias">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="17" name="Multiply_19" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="FP32">
+					<dim>256</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="18" name="/gen/model/model.2/Gemm" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>256</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.2/Gemm_output_0">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="19" name="gen.model.3.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="256" offset="183816" size="1024" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.3.weight">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="20" name="gen.model.3.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="256" offset="184840" size="1024" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.3.bias">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="21" name="gen.model.3.running_mean" type="Const" version="opset1">
+			<data element_type="f32" shape="256" offset="185864" size="1024" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.3.running_mean">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="22" name="gen.model.3.running_var" type="Const" version="opset1">
+			<data element_type="f32" shape="256" offset="186888" size="1024" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.3.running_var">
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="23" name="/gen/model/model.3/BatchNormalization" type="BatchNormInference" version="opset5">
+			<data epsilon="0.80000001192092896" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>256</dim>
+				</port>
+				<port id="2" precision="FP32">
+					<dim>256</dim>
+				</port>
+				<port id="3" precision="FP32">
+					<dim>256</dim>
+				</port>
+				<port id="4" precision="FP32">
+					<dim>256</dim>
+				</port>
+			</input>
+			<output>
+				<port id="5" precision="FP32" names="/gen/model/model.3/BatchNormalization_output_0">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="24" name="Constant_26" type="Const" version="opset1">
+			<data element_type="f32" shape="1" offset="51716" size="4" />
+			<output>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="25" name="/gen/model/model.4/LeakyRelu" type="PReLU" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.4/LeakyRelu_output_0">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="26" name="gen.model.5.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="512, 256" offset="187912" size="524288" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.5.weight">
+					<dim>512</dim>
+					<dim>256</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="27" name="/gen/model/model.5/Gemm/WithoutBiases" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>256</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>512</dim>
+					<dim>256</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="28" name="Constant_30" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="29" name="Multiply_33" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+				<port id="1" precision="FP32" />
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="30" name="Constant_31" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="31" name="gen.model.5.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="512" offset="712200" size="2048" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.5.bias">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="32" name="Multiply_34" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="FP32">
+					<dim>512</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="33" name="/gen/model/model.5/Gemm" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>512</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.5/Gemm_output_0">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="34" name="gen.model.6.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="512" offset="714248" size="2048" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.6.weight">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="35" name="gen.model.6.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="512" offset="716296" size="2048" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.6.bias">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="36" name="gen.model.6.running_mean" type="Const" version="opset1">
+			<data element_type="f32" shape="512" offset="718344" size="2048" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.6.running_mean">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="37" name="gen.model.6.running_var" type="Const" version="opset1">
+			<data element_type="f32" shape="512" offset="720392" size="2048" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.6.running_var">
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="38" name="/gen/model/model.6/BatchNormalization" type="BatchNormInference" version="opset5">
+			<data epsilon="0.80000001192092896" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>512</dim>
+				</port>
+				<port id="2" precision="FP32">
+					<dim>512</dim>
+				</port>
+				<port id="3" precision="FP32">
+					<dim>512</dim>
+				</port>
+				<port id="4" precision="FP32">
+					<dim>512</dim>
+				</port>
+			</input>
+			<output>
+				<port id="5" precision="FP32" names="/gen/model/model.6/BatchNormalization_output_0">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="39" name="Constant_41" type="Const" version="opset1">
+			<data element_type="f32" shape="1" offset="51716" size="4" />
+			<output>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="40" name="/gen/model/model.7/LeakyRelu" type="PReLU" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.7/LeakyRelu_output_0">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="41" name="gen.model.8.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="1024, 512" offset="722440" size="2097152" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.8.weight">
+					<dim>1024</dim>
+					<dim>512</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="42" name="/gen/model/model.8/Gemm/WithoutBiases" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>512</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1024</dim>
+					<dim>512</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="43" name="Constant_45" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="44" name="Multiply_48" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+				<port id="1" precision="FP32" />
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="45" name="Constant_46" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="46" name="gen.model.8.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="1024" offset="2819592" size="4096" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.8.bias">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="47" name="Multiply_49" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="FP32">
+					<dim>1024</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="48" name="/gen/model/model.8/Gemm" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1024</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.8/Gemm_output_0">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="49" name="gen.model.9.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="1024" offset="2823688" size="4096" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.9.weight">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="50" name="gen.model.9.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="1024" offset="2827784" size="4096" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.9.bias">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="51" name="gen.model.9.running_mean" type="Const" version="opset1">
+			<data element_type="f32" shape="1024" offset="2831880" size="4096" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.9.running_mean">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="52" name="gen.model.9.running_var" type="Const" version="opset1">
+			<data element_type="f32" shape="1024" offset="2835976" size="4096" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.9.running_var">
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="53" name="/gen/model/model.9/BatchNormalization" type="BatchNormInference" version="opset5">
+			<data epsilon="0.80000001192092896" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1024</dim>
+				</port>
+				<port id="2" precision="FP32">
+					<dim>1024</dim>
+				</port>
+				<port id="3" precision="FP32">
+					<dim>1024</dim>
+				</port>
+				<port id="4" precision="FP32">
+					<dim>1024</dim>
+				</port>
+			</input>
+			<output>
+				<port id="5" precision="FP32" names="/gen/model/model.9/BatchNormalization_output_0">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="54" name="Constant_56" type="Const" version="opset1">
+			<data element_type="f32" shape="1" offset="51716" size="4" />
+			<output>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="55" name="/gen/model/model.10/LeakyRelu" type="PReLU" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.10/LeakyRelu_output_0">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="56" name="gen.model.11.weight" type="Const" version="opset1">
+			<data element_type="f32" shape="784, 1024" offset="2840072" size="3211264" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.11.weight">
+					<dim>784</dim>
+					<dim>1024</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="57" name="/gen/model/model.11/Gemm/WithoutBiases" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1024</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>784</dim>
+					<dim>1024</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="58" name="Constant_60" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="59" name="Multiply_63" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+				<port id="1" precision="FP32" />
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="60" name="Constant_61" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="51200" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="61" name="gen.model.11.bias" type="Const" version="opset1">
+			<data element_type="f32" shape="784" offset="6051336" size="3136" />
+			<output>
+				<port id="0" precision="FP32" names="gen.model.11.bias">
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="62" name="Multiply_64" type="Multiply" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="FP32">
+					<dim>784</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="63" name="/gen/model/model.11/Gemm" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>784</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="/gen/model/model.11/Gemm_output_0">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="64" name="/gen/model/model.12/Tanh" type="Tanh" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1" precision="FP32" names="/gen/model/model.12/Tanh_output_0">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="65" name="/gen/Constant" type="Const" version="opset1">
+			<data element_type="i64" shape="4" offset="6054472" size="32" />
+			<output>
+				<port id="0" precision="I64" names="/gen/Constant_output_0">
+					<dim>4</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="66" name="generated_image" type="Reshape" version="opset1">
+			<data special_zero="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>784</dim>
+				</port>
+				<port id="1" precision="I64">
+					<dim>4</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32" names="generated_image">
+					<dim>1</dim>
+					<dim>1</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="67" name="generated_image/sink_port_0" type="Result" version="opset1" output_names="generated_image">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1</dim>
+					<dim>28</dim>
+					<dim>28</dim>
+				</port>
+			</input>
+		</layer>
+	</layers>
+	<edges>
+		<edge from-layer="0" from-port="0" to-layer="2" to-port="0" />
+		<edge from-layer="1" from-port="0" to-layer="2" to-port="1" />
+		<edge from-layer="2" from-port="2" to-layer="4" to-port="0" />
+		<edge from-layer="3" from-port="0" to-layer="4" to-port="1" />
+		<edge from-layer="4" from-port="2" to-layer="8" to-port="0" />
+		<edge from-layer="5" from-port="0" to-layer="7" to-port="0" />
+		<edge from-layer="6" from-port="0" to-layer="7" to-port="1" />
+		<edge from-layer="7" from-port="2" to-layer="8" to-port="1" />
+		<edge from-layer="8" from-port="2" to-layer="10" to-port="0" />
+		<edge from-layer="9" from-port="0" to-layer="10" to-port="1" />
+		<edge from-layer="10" from-port="2" to-layer="12" to-port="0" />
+		<edge from-layer="11" from-port="0" to-layer="12" to-port="1" />
+		<edge from-layer="12" from-port="2" to-layer="14" to-port="0" />
+		<edge from-layer="13" from-port="0" to-layer="14" to-port="1" />
+		<edge from-layer="14" from-port="2" to-layer="18" to-port="0" />
+		<edge from-layer="15" from-port="0" to-layer="17" to-port="0" />
+		<edge from-layer="16" from-port="0" to-layer="17" to-port="1" />
+		<edge from-layer="17" from-port="2" to-layer="18" to-port="1" />
+		<edge from-layer="18" from-port="2" to-layer="23" to-port="0" />
+		<edge from-layer="19" from-port="0" to-layer="23" to-port="1" />
+		<edge from-layer="20" from-port="0" to-layer="23" to-port="2" />
+		<edge from-layer="21" from-port="0" to-layer="23" to-port="3" />
+		<edge from-layer="22" from-port="0" to-layer="23" to-port="4" />
+		<edge from-layer="23" from-port="5" to-layer="25" to-port="0" />
+		<edge from-layer="24" from-port="0" to-layer="25" to-port="1" />
+		<edge from-layer="25" from-port="2" to-layer="27" to-port="0" />
+		<edge from-layer="26" from-port="0" to-layer="27" to-port="1" />
+		<edge from-layer="27" from-port="2" to-layer="29" to-port="0" />
+		<edge from-layer="28" from-port="0" to-layer="29" to-port="1" />
+		<edge from-layer="29" from-port="2" to-layer="33" to-port="0" />
+		<edge from-layer="30" from-port="0" to-layer="32" to-port="0" />
+		<edge from-layer="31" from-port="0" to-layer="32" to-port="1" />
+		<edge from-layer="32" from-port="2" to-layer="33" to-port="1" />
+		<edge from-layer="33" from-port="2" to-layer="38" to-port="0" />
+		<edge from-layer="34" from-port="0" to-layer="38" to-port="1" />
+		<edge from-layer="35" from-port="0" to-layer="38" to-port="2" />
+		<edge from-layer="36" from-port="0" to-layer="38" to-port="3" />
+		<edge from-layer="37" from-port="0" to-layer="38" to-port="4" />
+		<edge from-layer="38" from-port="5" to-layer="40" to-port="0" />
+		<edge from-layer="39" from-port="0" to-layer="40" to-port="1" />
+		<edge from-layer="40" from-port="2" to-layer="42" to-port="0" />
+		<edge from-layer="41" from-port="0" to-layer="42" to-port="1" />
+		<edge from-layer="42" from-port="2" to-layer="44" to-port="0" />
+		<edge from-layer="43" from-port="0" to-layer="44" to-port="1" />
+		<edge from-layer="44" from-port="2" to-layer="48" to-port="0" />
+		<edge from-layer="45" from-port="0" to-layer="47" to-port="0" />
+		<edge from-layer="46" from-port="0" to-layer="47" to-port="1" />
+		<edge from-layer="47" from-port="2" to-layer="48" to-port="1" />
+		<edge from-layer="48" from-port="2" to-layer="53" to-port="0" />
+		<edge from-layer="49" from-port="0" to-layer="53" to-port="1" />
+		<edge from-layer="50" from-port="0" to-layer="53" to-port="2" />
+		<edge from-layer="51" from-port="0" to-layer="53" to-port="3" />
+		<edge from-layer="52" from-port="0" to-layer="53" to-port="4" />
+		<edge from-layer="53" from-port="5" to-layer="55" to-port="0" />
+		<edge from-layer="54" from-port="0" to-layer="55" to-port="1" />
+		<edge from-layer="55" from-port="2" to-layer="57" to-port="0" />
+		<edge from-layer="56" from-port="0" to-layer="57" to-port="1" />
+		<edge from-layer="57" from-port="2" to-layer="59" to-port="0" />
+		<edge from-layer="58" from-port="0" to-layer="59" to-port="1" />
+		<edge from-layer="59" from-port="2" to-layer="63" to-port="0" />
+		<edge from-layer="60" from-port="0" to-layer="62" to-port="0" />
+		<edge from-layer="61" from-port="0" to-layer="62" to-port="1" />
+		<edge from-layer="62" from-port="2" to-layer="63" to-port="1" />
+		<edge from-layer="63" from-port="2" to-layer="64" to-port="0" />
+		<edge from-layer="64" from-port="1" to-layer="66" to-port="0" />
+		<edge from-layer="65" from-port="0" to-layer="66" to-port="1" />
+		<edge from-layer="66" from-port="2" to-layer="67" to-port="0" />
+	</edges>
+	<rt_info />
+</net>
