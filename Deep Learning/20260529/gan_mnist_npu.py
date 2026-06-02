@@ -1,4 +1,4 @@
-﻿﻿import numpy as np
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -24,7 +24,7 @@ img_size = 28
 channels = 1
 batch_size = 64
 lr = 0.0002
-epochs = 2
+epochs = 50
 
 class Generator(nn.Module):
     def __init__(self):
@@ -229,10 +229,10 @@ def check_npu_device(core):
             print(f"  {device}: (无法获取详细信息)")
     
     if 'NPU' in available_devices:
-        print("\n✓ NPU设备可用!")
+        print("\n NPU设备可用!")
         return True
     else:
-        print("\n✗ NPU设备不可用，将使用CPU")
+        print("\n NPU设备不可用，将使用CPU")
         return False
 
 def generate_with_npu(core, model_onnx, num_images=16, device_name='NPU'):
