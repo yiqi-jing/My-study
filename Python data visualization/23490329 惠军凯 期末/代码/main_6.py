@@ -1,4 +1,4 @@
-"""
+﻿"""
 中国经济发展数据分析与可视化 - 主程序
 =====================================
 
@@ -12,11 +12,11 @@
 
 import os
 import warnings
-from config import OUTPUT_DIR, AUTHOR, STUDENT_ID
-from data_loader import load_all_data, create_dataframe, clean_data, save_data
-from statistical_analysis import descriptive_statistics, distribution_analysis, comparison_analysis, trend_analysis
-from ml_analysis import run_all_ml_analysis
-from visualization import generate_all_plots
+from config_1 import OUTPUT_DIR, AUTHOR, STUDENT_ID
+from data_loader_2 import load_all_data, create_dataframe, clean_data, save_data
+from statistical_analysis_3 import descriptive_statistics, distribution_analysis, comparison_analysis, trend_analysis
+from ml_analysis_4 import run_all_ml_analysis
+from visualization_5 import generate_all_plots
 
 # 忽略警告
 warnings.filterwarnings('ignore')

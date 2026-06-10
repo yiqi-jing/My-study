@@ -1,4 +1,4 @@
-"""
+﻿"""
 可视化模块
 生成各类图表
 """
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib import font_manager
 import os
-from config import OUTPUT_DIR, COLORS
+from config_1 import OUTPUT_DIR, COLORS
 
 # 设置中文字体
 def setup_chinese_font():

@@ -4,7 +4,7 @@
 
 import pandas as pd
 import numpy as np
-from config import STATS_COLUMNS
+from config_1 import STATS_COLUMNS
 
 
 def descriptive_statistics(df):

@@ -1,4 +1,4 @@
-"""
+﻿"""
 数据加载和预处理模块 (Data Loader Module)
 ==========================================
 
@@ -29,7 +29,7 @@ import os
 import glob
 import logging
 from typing import Dict, List, Optional, Any
-from config import (
+from config_1 import (
     DATA_DIR, OUTPUT_DIR, YEAR_COLUMNS, YEARS,
     FILE_ENCODING, INTERPOLATION_METHOD
 )

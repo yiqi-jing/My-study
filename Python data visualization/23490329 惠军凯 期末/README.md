@@ -8,19 +8,19 @@
 
 ```
 23490329 惠军凯 期末/
-├── 代码/                        # 源代码目录
-│   ├── config.py               # 配置文件（路径、常量等）
-│   ├── data_loader.py          # 数据加载和预处理模块
-│   ├── statistical_analysis.py # 描述性统计分析模块
-│   ├── ml_analysis.py          # 机器学习分析模块
-│   ├── visualization.py        # 可视化模块
-│   └── main.py                 # 主程序入口
-├── 国家统计局的年度数据/         # 数据目录（15个CSV文件）
+├── 代码/                           # 源代码目录
+│   ├── config_1.py                # 配置文件（路径、常量等）
+│   ├── data_loader_2.py           # 数据加载和预处理模块
+│   ├── statistical_analysis_3.py  # 描述性统计分析模块
+│   ├── ml_analysis_4.py           # 机器学习分析模块
+│   ├── visualization_5.py         # 可视化模块
+│   └── main_6.py                  # 主程序入口
+├── 国家统计局的年度数据/            # 数据目录（15个CSV文件）
 │   ├── 年度数据.csv
 │   ├── 年度数据 (1).csv
 │   ├── 年度数据 (2).csv
 │   └── ...
-├── 分析结果/                    # 输出目录
+├── 分析结果/                       # 输出目录
 │   ├── 综合数据表.csv
 │   ├── 图1_GDP增长趋势.png
 │   ├── 图2_产业结构变化.png
@@ -74,7 +74,7 @@
 - `plot_correlation_heatmap()`: 相关性热力图
 - `plot_engel_coefficient()`: 恩格尔系数图
 
-### 6. main.py - 主程序
+### 6. main_6.py - 主程序
 - 整合所有模块
 - 按顺序执行分析流程
 - 输出分析结果和结论
@@ -90,7 +90,7 @@ pip install scikit-learn
 
 # 运行分析
 cd 代码
-python main.py
+python main_6.py
 ```
 
 ## 输出结果
