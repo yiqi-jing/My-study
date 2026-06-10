@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 """
 数据加载和预处理模块 (Data Loader Module)
 ==========================================
@@ -446,8 +445,8 @@ def save_data(df: pd.DataFrame, output_dir: str) -> str:
     csv_path = os.path.join(output_dir, '综合数据表.csv')
     
     try:
-        # 保存为CSV文件，使用UTF-8-BOM编码
-        df.to_csv(csv_path, index=False, encoding='utf-8-sig')
+        # 保存为CSV文件，使用UTF-8编码
+        df.to_csv(csv_path, index=False, encoding='utf-8')
         print(f"\n综合数据表已保存至: {csv_path}")
         logger.info(f"数据保存成功: {csv_path}")
         
